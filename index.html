@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 30196)
-Total output lines: 1561
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +23,7 @@ Total output lines: 1561
         .brand-header { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
         .robot-mark { width: 56px; height: 56px; flex: 0 0 auto; filter: drop-shadow(0 0 14px rgba(56, 189, 248, .28)); }
         main { width: min(760px, 100%); margin: 0 auto; }
-        h1 { margin: 0; font-size: clamp(1.7rem, 5vw, 2.3rem); letter-spacing: -.035em; }
+        h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 3.8rem); letter-spacing: -.045em; line-height: 1.05; }
         .subtitle { margin: 8px 0 12px; color: #a9b8cc; }
         .free-note { display: inline-block; margin: 0 8px 22px 0; padding: 7px 11px; border: 1px solid #166534; border-radius: 999px; background: rgba(20, 83, 45, .25); color: #bbf7d0; font-size: .86rem; line-height: 1.4; }
         .device-note { display: inline-block; margin: 0 0 22px; padding: 7px 11px; border: 1px solid #33445f; border-radius: 999px; background: rgba(15, 23, 42, .58); color: #cbd5e1; font-size: .86rem; line-height: 1.4; }
@@ -104,7 +101,8 @@ Total output lines: 1561
         .hint a { color: #7dd3fc; }
         .page-footer { width: min(760px, 100%); margin: 34px auto 4px; padding: 16px 12px; border-top: 1px solid #26364f; color: #8293aa; text-align: center; font-size: .84rem; }
         .page-footer strong { color: #cbd5e1; font-weight: 650; }
-        .alpha-note { color: #fcd34d; }
+        .testing-note { color: #fcd34d; }
+        .update-badge { display: inline-block; margin: 0 0 10px; padding: 5px 9px; border: 1px solid #0e7490; border-radius: 999px; background: rgba(8, 145, 178, .18); color: #a5f3fc !important; font-size: .76rem; font-weight: 800; letter-spacing: .09em; }
         @media (max-width: 560px) {
             body { padding-top: max(18px, env(safe-area-inset-top)); }
             .subtitle { margin-bottom: 8px; }
@@ -153,7 +151,7 @@ Total output lines: 1561
         <section id="entryScreen" class="entry-screen" aria-labelledby="entryTitle">
             <h2 id="entryTitle">Welcome to VoiceCommand</h2>
             <p class="entry-prompt" id="entryPrompt">Choose how you want to start.</p>
-            <p class="entry-autosave-note" id="entryAutosaveNote">Guest mode automatically saves chats in this browser. Keep the app open while the orange dot appears at the top right.</p>
+            <p class="entry-autosave-note" id="entryAutosaveNote">Guest mode automatically saves chats in this browser. Google sync saves chat text across devices; photos stay on this device. Keep the app open while the orange dot appears.</p>
             <div class="entry-actions">
                 <button id="googleSyncButton" class="google-sync-button" type="button">Sync Google account</button>
                 <button id="guestModeButton" class="guest-mode-button" type="button">Continue as guest</button>
@@ -237,25 +235,27 @@ Total output lines: 1561
             <span id="saveStatusText" class="save-label">Saving… please don’t close the app.</span>
         </div>
         <dialog id="whatsNewDialog" class="whats-new-dialog" aria-labelledby="whatsNewTitle">
-            <h2 id="whatsNewTitle">What’s new in version 1.8.0</h2>
-            <p>This update adds four backgrounds and richer replies while keeping the compact chat model within its 1 GB class target.</p>
+            <p class="update-badge">MAJOR UPDATE</p>
+            <h2 id="whatsNewTitle">What’s new in version 1.9.0</h2>
+            <p>VoiceCommand now supports Google account sign-in and cloud chat sync. Guest mode and its browser auto-save remain available.</p>
             <ul>
-                <li>Google account sync and guest mode now appear when you enter. Guest mode keeps chat history saved automatically in this browser.</li>
+                <li>Use Google sign-in to save chat text to your account and continue on another device. Photos stay on the device where they were selected.</li>
+                <li>Guest mode works as before and automatically saves chat history in the current browser.</li>
+                <li>The VoiceCommand title is larger, and the footer now says Early testing.</li>
                 <li>An orange dot appears at the top right while a save is pending. Keep the app open until it disappears.</li>
                 <li>The phone layout has larger, easier-to-tap controls and a simpler message composer.</li>
                 <li>Chat replies use a smaller model and shorter response limit to help them arrive faster.</li>
                 <li>Replies are tuned for short, natural back-and-forth chats and can follow the recent conversation.</li>
-                <li>Sending a swear word temporarily pauses chat for 2 minutes on this browser.</li>
-                <li>Email addresses are ignored by the swear-word check.</li>
+                <li>Sending a swear word temporarily pauses chat for 2 minutes on this browser. Email addresses are ignored by the swear-word check.</li>
                 <li>Choose Astro for detailed answers, Macro for very short answers, or Chato for an ongoing conversation.</li>
-                <li>Astro can give longer explanations, while Chato remembers more of the recent conversation.</li>
                 <li>Choose Sunset, Forest, Rose, or Slate in addition to the original backgrounds.</li>
-                <li>The app is labeled Alpha. You can reopen this update log from the entry screen any time.</li>
+                <li>You can reopen this update log from the entry screen any time.</li>
             </ul>
             <button id="closeWhatsNewButton" class="dialog-close" type="button">Close</button>
         </dialog>
     </main>
-        <footer class="page-footer"><strong>Current version: 1.8.0</strong> · <span class="alpha-note">Alpha · still under testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
+        <footer class="page-footer"><strong>Current version: 1.9.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const orb = document.getElementById('orb');
@@ -289,6 +289,24 @@ Total output lines: 1561
         const photoPreviewImage = document.getElementById('photoPreviewImage');
         const photoFileName = document.getElementById('photoFileName');
         const removePhotoButton = document.getElementById('removePhoto');
+        const SUPABASE_URL = 'https://dxspugmtykqquwhqzrgb.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_YSaednnkvZFQ6tsPpk0rrQ_3cQMRHoc';
+        const CLOUD_CHAT_TABLE = 'voicecommand_chats';
+        const GUEST_UPDATED_KEY = 'voicecommand-guest-chat-updated-v1';
+        const ACCOUNT_CHAT_KEY_PREFIX = 'voicecommand-account-chat-v1-';
+        const ACCOUNT_UPDATED_KEY_PREFIX = 'voicecommand-account-chat-updated-v1-';
+        const GOOGLE_SYNC_PENDING_KEY = 'voicecommand-google-sync-pending-v1';
+        let supabaseClient = null;
+        let syncUserId = '';
+        let cloudSyncTimer = 0;
+        let cloudSyncInProgress = false;
+        let cloudSyncAgain = false;
+        let accountStatusKey = 'accountStatus';
+        try {
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+            }
+        } catch (error) { /* Guest mode remains available if Supabase cannot initialize. */ }
         let recognition = null;
         let isListening = false;
         let callModeActive = false;
@@ -433,9 +451,9 @@ Total output lines: 1561
         COPY['ru-RU'].stoppingLabel = 'Останавливаю…';
         COPY['ru-RU'].stoppedLabel = 'Ответ остановлен.';
         COPY['ru-RU'].photoPrompt = 'Опиши, что изображено на фотографии: основные объекты, обстановку и читаемый текст.';
-        COPY['en-US'].accountStatus = 'Guest mode · chats save in this browser and do not sync across devices.';
+        COPY['en-US'].accountStatus = 'Guest mode saves chats in this browser. Google sync lets you continue on another device.';
         COPY['en-US'].entryPrompt = 'Choose an option to continue.';
-        COPY['en-US'].entryAutosaveNote = 'Auto-save is on in guest mode: chats are stored in this browser only. Keep the app open while the orange dot appears at the top right.';
+        COPY['en-US'].entryAutosaveNote = 'Guest mode auto-saves chats in this browser. Google sync saves chat text across devices; photos stay on this device. Keep the app open while the orange dot appears.';
         COPY['en-US'].guestModeLabel = 'Use guest mode';
         COPY['en-US'].savePending = 'Saving… please don’t close the app.';
         COPY['en-US'].saveComplete = 'Saved automatically.';
@@ -443,16 +461,22 @@ Total output lines: 1561
         COPY['en-US'].chatTimeoutTitle = 'Chat paused for 2 minutes';
         COPY['en-US'].chatTimeoutText = 'Swearing triggered a temporary 2-minute timeout. You can chat again when the timer reaches zero.';
         COPY['en-US'].googleSyncLabel = 'Sync Google account';
-        COPY['en-US'].googleSyncMessage = 'This feature is under construction, but you can use the guest mode.';
+        COPY['en-US'].syncUnavailable = 'Google sync could not load. Check your internet connection, or use guest mode.';
+        COPY['en-US'].syncLocalFile = 'Google sync needs the VoiceCommand website or localhost. Guest mode works from this local file.';
+        COPY['en-US'].syncStarting = 'Opening Google sign-in…';
+        COPY['en-US'].syncSignedIn = 'Google account found. Tap Sync Google account to open your saved chat.';
+        COPY['en-US'].syncRestoring = 'Loading your saved chat…';
+        COPY['en-US'].syncSuccess = 'Your chat is saved to your Google account.';
+        COPY['en-US'].syncError = 'Cloud sync failed. Your chat remains saved in this browser; check the account setup or connection.';
         COPY['en-US'].callModeLabel = 'Start live voice chat';
         COPY['en-US'].endCallModeLabel = 'End voice chat';
         COPY['en-US'].callModeActive = 'Live voice chat is active. Speak when ready.';
         COPY['en-US'].callModeUnsupported = 'Live voice chat needs microphone access and a browser with speech recognition and speech playback.';
         COPY['en-US'].callModeHint = 'Live voice chat uses your microphone; browser support may vary.';
         COPY['en-US'].photoNotSaved = 'Photo not saved with this chat.';
-        COPY['el-GR'].accountStatus = 'Λειτουργία επισκέπτη · οι συνομιλίες αποθηκεύονται σε αυτό το πρόγραμμα περιήγησης και δεν συγχρονίζονται μεταξύ συσκευών.';
+        COPY['el-GR'].accountStatus = 'Η λειτουργία επισκέπτη αποθηκεύει τις συνομιλίες σε αυτό το πρόγραμμα περιήγησης. Ο συγχρονισμός Google σε βοηθά να συνεχίσεις από άλλη συσκευή.';
         COPY['el-GR'].entryPrompt = 'Διάλεξε έναν τρόπο για να συνεχίσεις.';
-        COPY['el-GR'].entryAutosaveNote = 'Η αυτόματη αποθήκευση είναι ενεργή στη λειτουργία επισκέπτη: οι συνομιλίες αποθηκεύονται μόνο σε αυτό το πρόγραμμα περιήγησης. Μην κλείσεις την εφαρμογή όσο εμφανίζεται η πορτοκαλί κουκκίδα επάνω δεξιά.';
+        COPY['el-GR'].entryAutosaveNote = 'Η λειτουργία επισκέπτη αποθηκεύει αυτόματα τις συνομιλίες σε αυτό το πρόγραμμα περιήγησης. Ο συγχρονισμός Google αποθηκεύει το κείμενο σε όλες τις συσκευές· οι φωτογραφίες μένουν σε αυτή τη συσκευή. Μην κλείσεις την εφαρμογή όσο εμφανίζεται η πορτοκαλί κουκκίδα.';
         COPY['el-GR'].guestModeLabel = 'Χρήση λειτουργίας επισκέπτη';
         COPY['el-GR'].savePending = 'Αποθήκευση… μην κλείσεις την εφαρμογή.';
         COPY['el-GR'].saveComplete = 'Αποθηκεύτηκε αυτόματα.';
@@ -460,16 +484,22 @@ Total output lines: 1561
         COPY['el-GR'].chatTimeoutTitle = 'Η συνομιλία σταμάτησε για 2 λεπτά';
         COPY['el-GR'].chatTimeoutText = 'Η χρήση βρισιάς ενεργοποίησε προσωρινή παύση 2 λεπτών. Μπορείς να συνεχίσεις όταν μηδενιστεί ο χρονοδιακόπτης.';
         COPY['el-GR'].googleSyncLabel = 'Συγχρονισμός λογαριασμού Google';
-        COPY['el-GR'].googleSyncMessage = 'Αυτή η λειτουργία είναι υπό κατασκευή, αλλά μπορείς να χρησιμοποιήσεις τη λειτουργία επισκέπτη.';
+        COPY['el-GR'].syncUnavailable = 'Δεν ήταν δυνατή η φόρτωση του συγχρονισμού Google. Έλεγξε τη σύνδεση ή χρησιμοποίησε τη λειτουργία επισκέπτη.';
+        COPY['el-GR'].syncLocalFile = 'Ο συγχρονισμός Google απαιτεί τον ιστότοπο VoiceCommand ή localhost. Η λειτουργία επισκέπτη λειτουργεί και από αυτό το αρχείο.';
+        COPY['el-GR'].syncStarting = 'Άνοιγμα σύνδεσης Google…';
+        COPY['el-GR'].syncSignedIn = 'Βρέθηκε λογαριασμός Google. Πάτησε ξανά για να ανοίξεις τη συνομιλία σου.';
+        COPY['el-GR'].syncRestoring = 'Φόρτωση της αποθηκευμένης συνομιλίας…';
+        COPY['el-GR'].syncSuccess = 'Η συνομιλία σου αποθηκεύτηκε στον λογαριασμό Google.';
+        COPY['el-GR'].syncError = 'Ο συγχρονισμός απέτυχε. Η συνομιλία παραμένει αποθηκευμένη σε αυτό το πρόγραμμα περιήγησης· έλεγξε τις ρυθμίσεις ή τη σύνδεση.';
         COPY['el-GR'].callModeLabel = 'Έναρξη ζωντανής φωνητικής συνομιλίας';
         COPY['el-GR'].endCallModeLabel = 'Τερματισμός φωνητικής συνομιλίας';
         COPY['el-GR'].callModeActive = 'Η ζωντανή φωνητική συνομιλία είναι ενεργή. Μίλησε όποτε είσαι έτοιμος.';
         COPY['el-GR'].callModeUnsupported = 'Η ζωντανή φωνητική συνομιλία χρειάζεται μικρόφωνο και πρόγραμμα περιήγησης με αναγνώριση ομιλίας και εκφώνηση.';
         COPY['el-GR'].callModeHint = 'Η ζωντανή φωνητική συνομιλία χρησιμοποιεί το μικρόφωνο· η υποστήριξη διαφέρει ανά πρόγραμμα περιήγησης.';
         COPY['el-GR'].photoNotSaved = 'Η φωτογραφία δεν αποθηκεύτηκε σε αυτή τη συνομιλία.';
-        COPY['hi-IN'].accountStatus = 'गेस्ट मोड · चैट इस ब्राउज़र में अपने-आप सहेजी जाती है और डिवाइसों के बीच सिंक नहीं होती।';
+        COPY['hi-IN'].accountStatus = 'गेस्ट मोड चैट को इसी ब्राउज़र में सहेजता है। Google सिंक से दूसरे डिवाइस पर भी जारी रख सकते हैं।';
         COPY['hi-IN'].entryPrompt = 'जारी रखने के लिए एक विकल्प चुनें।';
-        COPY['hi-IN'].entryAutosaveNote = 'गेस्ट मोड में ऑटो-सेव चालू है: चैट सिर्फ़ इसी ब्राउज़र में सहेजी जाती है। ऊपर दाईं ओर नारंगी बिंदु दिखे तो ऐप बंद न करें।';
+        COPY['hi-IN'].entryAutosaveNote = 'गेस्ट मोड चैट को इस ब्राउज़र में अपने-आप सहेजता है। Google सिंक चैट का टेक्स्ट डिवाइसों पर सहेजता है; फ़ोटो इसी डिवाइस पर रहती हैं। नारंगी बिंदु दिखे तो ऐप बंद न करें।';
         COPY['hi-IN'].guestModeLabel = 'गेस्ट मोड इस्तेमाल करें';
         COPY['hi-IN'].savePending = 'सहेजा जा रहा है… कृपया ऐप बंद न करें।';
         COPY['hi-IN'].saveComplete = 'अपने-आप सहेजा गया।';
@@ -477,19 +507,36 @@ Total output lines: 1561
         COPY['hi-IN'].chatTimeoutTitle = 'चैट 2 मिनट के लिए रोकी गई';
         COPY['hi-IN'].chatTimeoutText = 'अपशब्द इस्तेमाल करने पर 2 मिनट का अस्थायी प्रतिबंध लगा है। टाइमर शून्य होने पर फिर चैट कर सकते हैं।';
         COPY['hi-IN'].googleSyncLabel = 'Google खाते से सिंक करें';
-        COPY['hi-IN'].googleSyncMessage = 'यह सुविधा अभी बन रही है, लेकिन आप गेस्ट मोड का उपयोग कर सकते हैं।';
+        COPY['hi-IN'].syncUnavailable = 'Google सिंक लोड नहीं हो सका। इंटरनेट जाँचें या गेस्ट मोड इस्तेमाल करें।';
+        COPY['hi-IN'].syncLocalFile = 'Google सिंक के लिए VoiceCommand वेबसाइट या localhost खोलें। इस फ़ाइल में गेस्ट मोड काम करता है।';
+        COPY['hi-IN'].syncStarting = 'Google साइन-इन खुल रहा है…';
+        COPY['hi-IN'].syncSignedIn = 'Google खाता मिल गया। अपनी चैट खोलने के लिए फिर से दबाएँ।';
+        COPY['hi-IN'].syncRestoring = 'आपकी सहेजी चैट लोड हो रही है…';
+        COPY['hi-IN'].syncSuccess = 'आपकी चैट Google खाते में सहेजी गई है।';
+        COPY['hi-IN'].syncError = 'क्लाउड सिंक विफल हुआ। चैट इस ब्राउज़र में सहेजी है; सेटअप या कनेक्शन जाँचें।';
         COPY['hi-IN'].callModeLabel = 'लाइव वॉइस चैट शुरू करें';
         COPY['hi-IN'].endCallModeLabel = 'वॉइस चैट समाप्त करें';
         COPY['hi-IN'].callModeActive = 'लाइव वॉइस चैट चालू है। तैयार होने पर बोलें।';
         COPY['hi-IN'].callModeUnsupported = 'लाइव वॉइस चैट के लिए माइक्रोफ़ोन और वॉइस पहचान व बोलने की सुविधा वाला ब्राउज़र चाहिए।';
         COPY['hi-IN'].callModeHint = 'लाइव वॉइस चैट आपके माइक्रोफ़ोन का उपयोग करती है; ब्राउज़र के अनुसार समर्थन अलग हो सकता है।';
         COPY['hi-IN'].photoNotSaved = 'इस चैट के साथ फ़ोटो सहेजी नहीं गई।';
-        COPY['ru-RU'].accountStatus = 'Гостевой режим · беседы сохраняются в этом браузере и не синхронизируются между устройствами.';
+        COPY['ru-RU'].accountStatus = 'Гостевой режим сохраняет беседы в этом браузере. Синхронизация Google позволит продолжить на другом устройстве.';
         COPY['ru-RU'].entryPrompt = 'Выберите способ продолжить.';
-        COPY['ru-RU'].entryAutosaveNote = 'В гостевом режиме включено автосохранение: беседы хранятся только в этом браузере. Не закрывайте приложение, пока вверху справа видна оранжевая точка.';
+        COPY['ru-RU'].entryAutosaveNote = 'Гостевой режим автоматически сохраняет беседы в этом браузере. Синхронизация Google сохраняет текст бесед на разных устройствах; фотографии остаются на этом устройстве. Не закрывайте приложение, пока видна оранжевая точка.';
         COPY['ru-RU'].guestModeLabel = 'Использовать гостевой режим';
         COPY['ru-RU'].savePending = 'Сохранение… не закрывайте приложение.';
-        COPY['ru-RU'].saveComplete = 'Сохранено автоматич…196 tokens truncated…вать гостевой режим.';
+        COPY['ru-RU'].saveComplete = 'Сохранено автоматически.';
+        COPY['ru-RU'].saveFailed = 'Не удалось сохранить автоматически. Оставьте приложение открытым и попробуйте ещё раз.';
+        COPY['ru-RU'].chatTimeoutTitle = 'Чат приостановлен на 2 минуты';
+        COPY['ru-RU'].chatTimeoutText = 'За ругань включена временная блокировка на 2 минуты. Вы сможете продолжить, когда таймер дойдёт до нуля.';
+        COPY['ru-RU'].googleSyncLabel = 'Синхронизация с Google';
+        COPY['ru-RU'].syncUnavailable = 'Не удалось загрузить синхронизацию Google. Проверьте интернет или используйте гостевой режим.';
+        COPY['ru-RU'].syncLocalFile = 'Для синхронизации Google нужен сайт VoiceCommand или localhost. В этом локальном файле работает гостевой режим.';
+        COPY['ru-RU'].syncStarting = 'Открывается вход через Google…';
+        COPY['ru-RU'].syncSignedIn = 'Аккаунт Google найден. Нажмите ещё раз, чтобы открыть сохранённую беседу.';
+        COPY['ru-RU'].syncRestoring = 'Загружается сохранённая беседа…';
+        COPY['ru-RU'].syncSuccess = 'Беседа сохранена в аккаунте Google.';
+        COPY['ru-RU'].syncError = 'Не удалось синхронизировать. Беседа сохранена в этом браузере; проверьте настройки или подключение.';
         COPY['ru-RU'].callModeLabel = 'Начать голосовой разговор';
         COPY['ru-RU'].endCallModeLabel = 'Завершить голосовой разговор';
         COPY['ru-RU'].callModeActive = 'Голосовой разговор активен. Говорите, когда будете готовы.';
@@ -525,6 +572,10 @@ Total output lines: 1561
             'Только Chato помнит больше недавнего контекста и поддерживает беседу.'
         ];
         function copy() { return COPY[languageSelect.value] || COPY['en-US']; }
+        function setAccountStatus(key) {
+            accountStatusKey = key;
+            accountStatus.textContent = copy()[key] || copy().accountStatus;
+        }
         function selectedChatMode() {
             return CHAT_MODE_VALUES.includes(chatModeSelect.value) ? chatModeSelect.value : 'chato';
         }
@@ -549,7 +600,7 @@ Total output lines: 1561
             guestModeButton.textContent = c.guestModeLabel;
             chatTimeoutTitle.textContent = c.chatTimeoutTitle;
             chatTimeoutText.textContent = c.chatTimeoutText;
-            accountStatus.textContent = c.accountStatus;
+            accountStatus.textContent = c[accountStatusKey] || c.accountStatus;
             googleSyncButton.textContent = c.googleSyncLabel;
             document.getElementById('callModeHint').textContent = c.callModeHint;
             updateCallModeButton();
@@ -595,15 +646,9 @@ Total output lines: 1561
             scheduleModelWarmup();
         });
         guestModeButton.addEventListener('click', () => {
-            guestModeEntered = true;
-            entryScreen.hidden = true;
-            chatApp.hidden = false;
-            updateChatTimeoutUI();
-            scheduleConversationSave();
+            enterChatMode();
         });
-        googleSyncButton.addEventListener('click', () => {
-            accountStatus.textContent = copy().googleSyncMessage;
-        });
+        googleSyncButton.addEventListener('click', handleGoogleSync);
         whatsNewButton.addEventListener('click', () => {
             if (typeof whatsNewDialog.showModal === 'function') whatsNewDialog.showModal();
             else whatsNewDialog.setAttribute('open', '');
@@ -776,6 +821,13 @@ Total output lines: 1561
             })).slice(-80);
         }
 
+        function readConversationCache(storageKey) {
+            try {
+                const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+                return normalizeConversationMessages(saved);
+            } catch (error) { return []; }
+        }
+
         function setSaveIndicator(state) {
             if (saveIndicatorTimer) {
                 clearTimeout(saveIndicatorTimer);
@@ -802,8 +854,16 @@ Total output lines: 1561
             }
             setSaveIndicator('saving');
             try {
-                localStorage.setItem(GUEST_CHAT_KEY, JSON.stringify(savedConversationMessages()));
+                const messages = savedConversationMessages();
+                if (syncUserId) {
+                    localStorage.setItem(ACCOUNT_CHAT_KEY_PREFIX + syncUserId, JSON.stringify(messages));
+                    localStorage.setItem(ACCOUNT_UPDATED_KEY_PREFIX + syncUserId, String(Date.now()));
+                } else {
+                    localStorage.setItem(GUEST_CHAT_KEY, JSON.stringify(messages));
+                    localStorage.setItem(GUEST_UPDATED_KEY, String(Date.now()));
+                }
                 setSaveIndicator('saved');
+                if (syncUserId) scheduleCloudSync();
             } catch (error) { setSaveIndicator('error'); }
         }
 
@@ -822,19 +882,183 @@ Total output lines: 1561
                 const raw = localStorage.getItem(GUEST_CHAT_KEY);
                 if (!raw) return false;
                 const saved = JSON.parse(raw);
-                if (!Array.isArray(saved)) return false;
-                const valid = saved.filter(item => item && ['user', 'assistant'].includes(item.role) && typeof item.content === 'string').slice(-80);
-                if (!valid.length) return false;
-                hasRestoredConversation = true;
-                restoringConversation = true;
-                conversation.replaceChildren();
-                valid.forEach(item => addMessage(item.role, item.content.slice(0, 8000), '', item.photo === true));
-                aiHistory = valid.filter(item => item.content.trim()).slice(-8).map(item => ({ role: item.role, content: item.content.slice(0, 8000) }));
-                restoringConversation = false;
-                return true;
+                return restoreConversationMessages(saved);
             } catch (error) {
                 restoringConversation = false;
                 return false;
+            }
+        }
+
+        function normalizeConversationMessages(messages) {
+            if (!Array.isArray(messages)) return [];
+            return messages
+                .filter(item => item && ['user', 'assistant'].includes(item.role) && typeof item.content === 'string')
+                .slice(-80)
+                .map(item => ({ role: item.role, content: item.content.slice(0, 8000), photo: item.photo === true }));
+        }
+
+        function restoreConversationMessages(messages) {
+            const valid = normalizeConversationMessages(messages);
+            if (!valid.length) return false;
+            hasRestoredConversation = true;
+            restoringConversation = true;
+            conversation.replaceChildren();
+            valid.forEach(item => addMessage(item.role, item.content, '', item.photo));
+            aiHistory = valid.filter(item => item.content.trim()).slice(-8).map(item => ({ role: item.role, content: item.content }));
+            restoringConversation = false;
+            return true;
+        }
+
+        function enterChatMode() {
+            guestModeEntered = true;
+            entryScreen.hidden = true;
+            chatApp.hidden = false;
+            updateChatTimeoutUI();
+            scheduleConversationSave();
+        }
+
+        async function initializeAccountSync() {
+            if (!supabaseClient) {
+                setAccountStatus('syncUnavailable');
+                return;
+            }
+            if (window.location.protocol === 'file:') {
+                setAccountStatus('syncLocalFile');
+                return;
+            }
+            try {
+                const { data, error } = await supabaseClient.auth.getSession();
+                if (error) throw error;
+                if (data.session && data.session.user) {
+                    const currentUrl = new URL(window.location.href);
+                    const returnedFromGoogle = currentUrl.searchParams.has('code') || currentUrl.hash.includes('access_token');
+                    let signInWasStartedHere = false;
+                    try {
+                        signInWasStartedHere = sessionStorage.getItem(GOOGLE_SYNC_PENDING_KEY) === '1';
+                        if (signInWasStartedHere) sessionStorage.removeItem(GOOGLE_SYNC_PENDING_KEY);
+                    } catch (storageError) { /* The account can still be opened with one more tap. */ }
+                    if (returnedFromGoogle || signInWasStartedHere) {
+                        history.replaceState({}, document.title, currentUrl.pathname);
+                        await syncAccountAndEnter(data.session.user.id);
+                        return;
+                    }
+                    setAccountStatus('syncSignedIn');
+                }
+            } catch (error) {
+                setAccountStatus('syncError');
+            }
+        }
+
+        async function handleGoogleSync() {
+            if (!supabaseClient) {
+                setAccountStatus('syncUnavailable');
+                return;
+            }
+            if (window.location.protocol === 'file:') {
+                setAccountStatus('syncLocalFile');
+                return;
+            }
+            googleSyncButton.disabled = true;
+            try {
+                const { data, error } = await supabaseClient.auth.getSession();
+                if (error) throw error;
+                if (!data.session || !data.session.user) {
+                    setAccountStatus('syncStarting');
+                    const returnUrl = new URL(window.location.href);
+                    returnUrl.search = '';
+                    returnUrl.hash = '';
+                    try { sessionStorage.setItem(GOOGLE_SYNC_PENDING_KEY, '1'); } catch (storageError) { /* The user can tap sync again after sign-in. */ }
+                    const { error: authError } = await supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: returnUrl.href,
+                            queryParams: { prompt: 'select_account' }
+                        }
+                    });
+                    if (authError) {
+                        try { sessionStorage.removeItem(GOOGLE_SYNC_PENDING_KEY); } catch (storageError) { /* Ignore unavailable session storage. */ }
+                        throw authError;
+                    }
+                    return;
+                }
+                await syncAccountAndEnter(data.session.user.id);
+            } catch (error) {
+                setAccountStatus('syncError');
+            } finally {
+                googleSyncButton.disabled = false;
+            }
+        }
+
+        async function syncAccountAndEnter(userId) {
+            syncUserId = userId;
+            setAccountStatus('syncRestoring');
+            const { data, error } = await supabaseClient
+                .from(CLOUD_CHAT_TABLE)
+                .select('messages, updated_at')
+                .eq('user_id', userId)
+                .maybeSingle();
+            if (error) throw error;
+
+            const accountCacheKey = ACCOUNT_CHAT_KEY_PREFIX + userId;
+            const accountUpdatedKey = ACCOUNT_UPDATED_KEY_PREFIX + userId;
+            const accountCacheExists = localStorage.getItem(accountCacheKey) !== null;
+            const accountMessages = readConversationCache(accountCacheKey);
+            const cloudMessages = normalizeConversationMessages(data && data.messages);
+            const localMessages = accountCacheExists ? accountMessages : (!data ? readConversationCache(GUEST_CHAT_KEY) : []);
+            const localUpdatedAt = Number(localStorage.getItem(accountUpdatedKey) || 0);
+            const cloudUpdatedAt = data ? Date.parse(data.updated_at || '') || 0 : 0;
+            const localIsNewer = localMessages.length > 0 && localUpdatedAt > cloudUpdatedAt;
+            const selectedMessages = data && !localIsNewer ? cloudMessages : localMessages;
+            if (selectedMessages.length) {
+                restoreConversationMessages(selectedMessages);
+                localStorage.setItem(accountCacheKey, JSON.stringify(selectedMessages));
+                localStorage.setItem(accountUpdatedKey, String(data && !localIsNewer ? cloudUpdatedAt : Date.now()));
+            }
+
+            enterChatMode();
+            setAccountStatus('syncSuccess');
+            if (!data || localIsNewer) await syncCurrentConversationToCloud();
+        }
+
+        function scheduleCloudSync() {
+            if (!syncUserId || !supabaseClient) return;
+            if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
+            cloudSyncTimer = setTimeout(() => {
+                cloudSyncTimer = 0;
+                syncCurrentConversationToCloud();
+            }, 600);
+        }
+
+        async function syncCurrentConversationToCloud() {
+            if (!syncUserId || !supabaseClient) return;
+            if (cloudSyncInProgress) {
+                cloudSyncAgain = true;
+                return;
+            }
+            cloudSyncInProgress = true;
+            try {
+                do {
+                    cloudSyncAgain = false;
+                    const { error } = await supabaseClient.from(CLOUD_CHAT_TABLE).upsert({
+                        user_id: syncUserId,
+                        messages: savedConversationMessages(),
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'user_id' });
+                    if (error) throw error;
+                } while (cloudSyncAgain);
+                if (guestModeEntered) {
+                    setSaveIndicator('saved');
+                    saveStatusText.textContent = copy().syncSuccess;
+                }
+            } catch (error) {
+                if (guestModeEntered) {
+                    setSaveIndicator('error');
+                    saveStatusText.textContent = copy().syncError;
+                } else {
+                    setAccountStatus('syncError');
+                }
+            } finally {
+                cloudSyncInProgress = false;
             }
         }
 
@@ -947,6 +1171,7 @@ Total output lines: 1561
         const conversationObserver = new MutationObserver(scheduleConversationSave);
         conversationObserver.observe(conversation, { childList: true, subtree: true, characterData: true });
         setLanguage();
+        initializeAccountSync();
         chatForm.addEventListener('submit', event => {
             event.preventDefault();
             if (isGenerating || isSpeaking) { stopGeneration(); return; }
