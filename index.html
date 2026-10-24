@@ -222,7 +222,7 @@
         <div id="chatApp" class="chat-app" hidden>
         <p class="subtitle" id="subtitle">Talk out loud or type a message to chat.</p>
         <p class="free-note" id="freeNote">Free to use · guest mode available</p>
-        <p class="ai-note" id="aiNote">Free on-device AI. The fast chat model downloads on first use; photo analysis downloads a separate model the first time. WebGPU is required, and photos stay on your device. For factual questions, VoiceCommand may send your query to cl0q.com and include source links.</p>
+        <p class="ai-note" id="aiNote">Free on-device AI. The fast chat model downloads on first use; photo analysis downloads a separate model the first time. WebGPU is required. Every text message for an AI reply is searched on the web through cl0q.com, with Wikipedia as backup; uploaded photos are analyzed on your device.</p>
         <p class="device-note" id="deviceNote">Works on phones, but runs best on a PC or laptop.</p>
         <section id="chatTimeout" class="chat-timeout" role="alert" aria-live="assertive" hidden>
             <div class="chat-timeout-copy">
@@ -302,20 +302,26 @@
             <span id="saveStatusText" class="save-label">Saving… please don’t close the app.</span>
         </div>
         <dialog id="whatsNewDialog" class="whats-new-dialog" aria-labelledby="whatsNewTitle">
-            <p class="update-badge">LIVE SEARCH & QUICK ANSWERS</p>
-            <h2 id="whatsNewTitle">What’s new in version 1.12.0</h2>
-            <p>VoiceCommand can now search the web and include source links, answer common how-to questions instantly, and show owner controls for this browser’s news log.</p>
+            <p class="update-badge">WEB SEARCH RELIABILITY UPDATE</p>
+            <h2 id="whatsNewTitle">What’s new in version 1.13.0</h2>
+            <p>Web search issues are fixed with a backup search provider and clearer messages when search services are unavailable.</p>
             <p id="newsAdminNote" class="news-admin-note" hidden>Owner controls are enabled. Deletions are saved only in this browser; restore them here any time.</p>
             <button id="restoreNewsButton" class="restore-news-button" type="button" hidden>Restore deleted news entries</button>
             <ul>
-                <li data-news-id="1.12-web-search">Factual questions automatically trigger a web search, and answers include clickable source links.</li>
-                <li data-news-id="1.12-howto">Common questions like “How can I sleep?” and “How do I use a laptop?” get quick, practical answers.</li>
-                <li data-news-id="1.12-news-admin">The signed-in owner can hide or restore news-log entries in this browser.</li>
-                <li data-news-id="1.12-daily-check">The developer checks the site every day.</li>
-                <li data-news-id="1.12-legacy-removed">Notes about update 0.09.0 have been removed from the What’s New log.</li>
+                <li data-news-id="1.13-web-search">The AI automatically searches the web for text messages and includes source links with answers.</li>
+                <li data-news-id="1.13-fallback">If cl0q.com does not respond, Wikipedia is tried as a backup source.</li>
+                <li data-news-id="1.13-errors">Search-service outages and rate limits are explained without incorrectly blaming your internet connection.</li>
             </ul>
             <details class="release-archive">
-                <summary>Recent updates · versions 1.11.0–1.8.0</summary>
+                <summary>Recent updates · versions 1.12.0–1.8.0</summary>
+                <h3>Version 1.12.0</h3>
+                <ul>
+                    <li data-news-id="1.12-web-search">Text messages for AI answers started using web search and source links.</li>
+                    <li data-news-id="1.12-howto">Added answers for common questions about sleep and using a laptop.</li>
+                    <li data-news-id="1.12-news-admin">The signed-in owner can hide or restore news-log entries in this browser.</li>
+                    <li data-news-id="1.12-daily-check">The developer checks the site every day.</li>
+                    <li data-news-id="1.12-legacy-removed">Notes about update 0.09.0 were removed from the What’s New log.</li>
+                </ul>
                 <h3>Version 1.11.0</h3>
                 <ul>
                     <li data-news-id="1.11-history">A confirmed Delete history control clears the current chat from this device and the synced account when signed in.</li>
@@ -348,7 +354,7 @@
             <div class="dialog-actions"><button id="cancelDeleteHistoryButton" class="secondary-button" type="button">Cancel</button><button id="confirmDeleteHistoryButton" class="destructive-button" type="button">Delete history</button></div>
         </dialog>
     </main>
-        <footer class="page-footer"><strong>Current version: 1.12.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma. · The developer checks the site every day.</footer>
+        <footer class="page-footer"><strong>Current version: 1.13.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma. · The developer checks the site every day.</footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -492,15 +498,15 @@
                 joke: ['Γιατί πήγε ο υπολογιστής στον γιατρό; Είχε ιό.', 'Γιατί προήχθη το ρομπότ; Είχε εξαιρετική απόδοση.', 'Πώς λέγεται ένας υπολογιστής που τραγουδά; Dell.'],
                 intents: { greeting: ['γεια','καλημέρα','καλησπέρα','χαίρετε'], name: ['πώς σε λένε','ποιο είναι το όνομά σου','ποιος είσαι'], help: ['τι μπορείς να κάνεις','βοήθεια','τι μπορώ να ρωτήσω'], thanks: ['ευχαριστώ'], mood: ['τι κάνεις','πώς είσαι','είσαι καλά'], bye: ['αντίο','γεια σου','καληνύχτα','τα λέμε'], joke: ['πες μου ένα αστείο','αστείο','κάνε με να γελάσω'], time: ['τι ώρα','ώρα είναι'], date: ['τι ημερομηνία','τι μέρα','σήμερα'], weather: ['καιρός','πρόγνωση','θερμοκρασία','βρέχει','βροχή','χιόνι'], purpose: ['ποιος σε έφτιαξε','ποιος σε δημιούργησε'], plus: ['συν'], minus: ['μείον'], times: ['επί','φορές'], divided: ['διά','διαιρούμενο με'] }
             },
+Warning: truncated output (original token count: 10541)
+Total output lines: 250
+
             'hi-IN': {
                 ui: ['बोलकर या संदेश लिखकर चैट करें।', 'मुफ़्त · गेस्ट मोड उपलब्ध', 'फ़ोन पर काम करता है, लेकिन PC या लैपटॉप पर बेहतर चलता है।', 'भाषा', 'आवाज़', 'बातचीत', 'संदेश लिखें…', 'भेजें'],
                 hint: 'कुछ भी पूछें। मैं ग्रीस के मौसम, गणनाओं और दूसरे सवालों में भी मदद कर सकता हूँ।',
                 voiceHint: 'उपलब्ध आवाज़ें आपके ब्राउज़र या डिवाइस पर निर्भर हैं। मौसम की जानकारी: ',
                 welcome: 'नमस्ते! संदेश भेजें या बोलने के लिए TALK दबाएँ। मैं आपकी क्या मदद करूँ?', ready: 'जब चाहें, मैं तैयार हूँ।', listening: 'मैं सुन रहा हूँ…',
                 unsupported: 'यहाँ वॉइस पहचान उपलब्ध नहीं है। Chrome या Edge आज़माएँ।', allowMic: 'माइक्रोफ़ोन की अनुमति दें और फिर कोशिश करें।', noSpeech: 'मुझे कुछ सुनाई नहीं दिया। फिर से कोशिश करें।', trouble: 'मैं ठीक से सुन नहीं पाया। फिर से कोशिश करें।',
-Warning: truncated output (original token count: 9942)
-Total output lines: 250
-
                 fallback: 'मैं अभी यह जवाब देना सीख रहा हूँ। मैं ग्रीस के मौसम, समय, तारीख, आसान गणनाओं और चुटकुलों में मदद कर सकता हूँ।',
                 greeting: 'नमस्ते! आपसे बात करके अच्छा लगा। मैं आपकी क्या मदद करूँ?', greetingNamed: 'नमस्ते, {name}! मैं आपकी क्या मदद करूँ?',
                 name: 'आप मुझे Jarvis कह सकते हैं। मैं आपको किस नाम से बुलाऊँ?', nameIntro: 'आपसे मिलकर अच्छा लगा, {name}! मैं आपकी क्या मदद करूँ?',
@@ -535,10 +541,10 @@ Total output lines: 250
         COPY['hi-IN'].backgrounds = ['मिडनाइट', 'समुद्र', 'ऑरोरा', 'सूर्यास्त', 'जंगल', 'रोज़', 'स्लेट', 'कॉस्मिक'];
         COPY['ru-RU'].backgroundLabel = 'Фон';
         COPY['ru-RU'].backgrounds = ['Полночь', 'Океан', 'Аврора', 'Закат', 'Лес', 'Розовый', 'Графит', 'Космос'];
-        COPY['en-US'].aiNote = 'Free on-device AI. One fast chat model downloads the first time; photo analysis downloads a separate model the first time. WebGPU is required, and photos stay on your device. For factual questions, the AI searches cl0q.com with your query and adds source links.';
-        COPY['el-GR'].aiNote = 'Δωρεάν AI στη συσκευή σου. Τα μοντέλα συνομιλίας και φωτογραφιών κατεβαίνουν την πρώτη φορά. Απαιτείται WebGPU και οι φωτογραφίες μένουν στη συσκευή σου. Για ερωτήσεις πραγματικών πληροφοριών, η AI αναζητά στο cl0q.com με το ερώτημά σου και προσθέτει πηγές.';
-        COPY['hi-IN'].aiNote = 'मुफ़्त ऑन-डिवाइस AI। चैट और फ़ोटो मॉडल पहली बार डाउनलोड होते हैं। WebGPU ज़रूरी है और फ़ोटो आपके डिवाइस पर रहती हैं। तथ्यात्मक सवालों के लिए AI आपके सवाल से cl0q.com पर खोज करता है और स्रोत दिखाता है।';
-        COPY['ru-RU'].aiNote = 'Бесплатный ИИ на устройстве. Модели чата и фото загружаются при первом использовании. Нужен WebGPU; фотографии остаются на устройстве. Для фактических вопросов ИИ ищет в cl0q.com по вашему запросу и добавляет ссылки на источники.';
+        COPY['en-US'].aiNote = 'Free on-device AI. The chat and photo models download the first time. WebGPU is required. Every text message for an AI answer is searched on the web through cl0q.com, with Wikipedia as backup; uploaded photos are analyzed on your device.';
+        COPY['el-GR'].aiNote = 'Δωρεάν AI στη συσκευή σου. Τα μοντέλα συνομιλίας και φωτογραφιών κατεβαίνουν την πρώτη φορά. Απαιτείται WebGPU. Κάθε μήνυμα κειμένου για απάντηση AI αναζητείται στον ιστό μέσω cl0q.com, με εφεδρική αναζήτηση στη Wikipedia· οι φωτογραφίες αναλύονται στη συσκευή σου.';
+        COPY['hi-IN'].aiNote = 'मुफ़्त ऑन-डिवाइस AI। चैट और फ़ोटो मॉडल पहली बार डाउनलोड होते हैं। WebGPU ज़रूरी है। AI जवाब के लिए हर टेक्स्ट संदेश cl0q.com पर खोजा जाता है; बैकअप में Wikipedia है। फ़ोटो आपके डिवाइस पर विश्लेषित होती हैं।';
+        COPY['ru-RU'].aiNote = 'Бесплатный ИИ на устройстве. Модели чата и фото загружаются при первом использовании. Нужен WebGPU. Каждое текстовое сообщение для ответа ИИ ищется через cl0q.com, запасной источник поиска — Wikipedia; фотографии анализируются на устройстве.';
         COPY['en-US'].photoLabel = 'Photo';
         COPY['en-US'].removePhoto = 'Remove photo';
         COPY['en-US'].photoPrompt = 'Describe what is shown in this photo. Point out the main objects, scene, and any readable text.';
@@ -604,12 +610,9 @@ Total output lines: 250
         COPY['el-GR'].syncLocalFile = 'Ο συγχρονισμός Google απαιτεί τον ιστότοπο VoiceCommand ή localhost. Η λειτουργία επισκέπτη λειτουργεί και από αυτό το αρχείο.';
         COPY['el-GR'].syncStarting = 'Άνοιγμα σύνδεσης Google…';
         COPY['el-GR'].syncSignedIn = 'Βρέθηκε λογαριασμός Google. Πάτησε ξανά για να ανοίξεις τη συνομιλία σου.';
-        COPY['el-GR'].syncRestoring = 'Φόρτωση της αποθηκευμένης συνομιλίας…';
-        COPY['el-GR'].syncSuccess = 'Η συνομιλία σου αποθηκεύτηκε στον λογαριασμό Google.';
-        COPY['el-GR'].syncError = 'Ο συγχρονισμός απέτυχε. Η συνομιλία παραμένει αποθηκευμένη σε αυτό το πρόγραμμα περιήγησης· έλεγξε τις ρυθμίσεις ή τη σύνδεση.';
-        COPY['el-GR'].callModeLabel = 'Έναρξη ζωντανής φωνητικής συνομιλίας';
-        COPY['el-GR'].endCallModeLabel = 'Τερματισμός φωνητικής συνομιλίας';
-        COPY['el-GR'].callModeActive = 'Η ζωντανή φωνητική συνομ…942 tokens truncated…ा कनेक्शन जाँचें।';
+        COPY['el-GR'].syncResto…1041 tokens truncated…ng = 'आपकी सहेजी चैट लोड हो रही है…';
+        COPY['hi-IN'].syncSuccess = 'आपकी चैट Google खाते में सहेजी गई है।';
+        COPY['hi-IN'].syncError = 'क्लाउड सिंक विफल हुआ। चैट इस ब्राउज़र में सहेजी है; सेटअप या कनेक्शन जाँचें।';
         COPY['hi-IN'].callModeLabel = 'लाइव वॉइस चैट शुरू करें';
         COPY['hi-IN'].endCallModeLabel = 'वॉइस चैट समाप्त करें';
         COPY['hi-IN'].callModeActive = 'लाइव वॉइस चैट चालू है। तैयार होने पर बोलें।';
@@ -675,10 +678,10 @@ Total output lines: 250
         };
         function newUiCopy() { return NEW_UI_COPY[languageSelect.value] || NEW_UI_COPY['en-US']; }
         const WEB_SEARCH_COPY = {
-            'en-US': { note: 'For factual answers, the AI searches cl0q.com using your question. Source links appear below its answer.', searching: 'Searching the web…', noResults: 'I could not find matching pages. Try a different question.', failed: 'Web search is unavailable right now. Check your connection and try again.', sources: 'Sources' },
-            'el-GR': { note: 'Για πραγματικές πληροφορίες, η AI αναζητά στο cl0q.com χρησιμοποιώντας την ερώτησή σου. Οι πηγές εμφανίζονται κάτω από την απάντηση.', searching: 'Αναζήτηση στον ιστό…', noResults: 'Δεν βρήκα σχετικές σελίδες. Δοκίμασε άλλη ερώτηση.', failed: 'Η αναζήτηση δεν είναι διαθέσιμη τώρα. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά.', sources: 'Πηγές' },
-            'hi-IN': { note: 'तथ्यात्मक जवाबों के लिए AI आपके सवाल से cl0q.com पर खोज करता है। जवाब के नीचे स्रोत लिंक मिलेंगे।', searching: 'वेब पर खोज रहे हैं…', noResults: 'मिलते-जुलते पेज नहीं मिले। दूसरा सवाल आज़माएँ।', failed: 'वेब खोज अभी उपलब्ध नहीं है। इंटरनेट जाँचकर फिर कोशिश करें।', sources: 'स्रोत' },
-            'ru-RU': { note: 'Для фактических ответов ИИ ищет в cl0q.com по вашему вопросу. Ссылки на источники будут под ответом.', searching: 'Ищу в интернете…', noResults: 'Подходящих страниц не найдено. Попробуйте задать вопрос иначе.', failed: 'Поиск сейчас недоступен. Проверьте интернет и попробуйте снова.', sources: 'Источники' }
+            'en-US': { note: 'The AI searches the web for every text message and uses those sources to answer. It sends the message to cl0q.com, then tries Wikipedia if needed. Uploaded photos stay on your device.', searching: 'Searching the web…', noResults: 'I could not find matching pages. Try a different question.', failed: 'The search services did not respond. Your internet may be fine; they could be busy or rate-limiting requests. Try again shortly.', sources: 'Sources' },
+            'el-GR': { note: 'Η AI αναζητά στον ιστό για κάθε μήνυμα κειμένου και απαντά με βάση τις πηγές. Στέλνει το μήνυμα στο cl0q.com και δοκιμάζει τη Wikipedia αν χρειαστεί. Οι φωτογραφίες μένουν στη συσκευή σου.', searching: 'Αναζήτηση στον ιστό…', noResults: 'Δεν βρήκα σχετικές σελίδες. Δοκίμασε άλλη ερώτηση.', failed: 'Οι υπηρεσίες αναζήτησης δεν απάντησαν. Η σύνδεσή σου μπορεί να είναι κανονική· οι υπηρεσίες ίσως είναι απασχολημένες ή περιορίζουν τα αιτήματα. Δοκίμασε ξανά σύντομα.', sources: 'Πηγές' },
+            'hi-IN': { note: 'AI हर टेक्स्ट संदेश के लिए वेब पर खोज करता है और उन्हीं स्रोतों से जवाब देता है। संदेश cl0q.com को जाता है, फिर ज़रूरत पर Wikipedia आज़माता है। फ़ोटो आपके डिवाइस पर रहती हैं।', searching: 'वेब पर खोज रहे हैं…', noResults: 'मिलते-जुलते पेज नहीं मिले। दूसरा सवाल आज़माएँ।', failed: 'खोज सेवाओं ने जवाब नहीं दिया। आपका इंटरनेट ठीक हो सकता है; सेवाएँ व्यस्त हो सकती हैं या अनुरोध सीमित कर सकती हैं। थोड़ी देर बाद फिर कोशिश करें।', sources: 'स्रोत' },
+            'ru-RU': { note: 'ИИ ищет в интернете для каждого текстового сообщения и отвечает по найденным источникам. Сообщение отправляется на cl0q.com, затем при необходимости используется Wikipedia. Фотографии остаются на устройстве.', searching: 'Ищу в интернете…', noResults: 'Подходящих страниц не найдено. Попробуйте задать вопрос иначе.', failed: 'Поисковые сервисы не ответили. Интернет может работать нормально: сервисы могут быть заняты или ограничивать запросы. Попробуйте позже.', sources: 'Источники' }
         };
         function webSearchCopy() { return WEB_SEARCH_COPY[languageSelect.value] || WEB_SEARCH_COPY['en-US']; }
         function copy() { return COPY[languageSelect.value] || COPY['en-US']; }
@@ -1663,31 +1666,59 @@ Total output lines: 250
         }
 
         function shouldUseWebSearch(message) {
-            if (extractWebSearchQuery(message)) return true;
-            if (isQuickReply(message)) return false;
-            const lower = String(message || '').trim().toLocaleLowerCase(languageSelect.value);
-            if ((copy().intents.weather || []).some(term => lower.includes(term))) return false;
-            return Boolean(lower) || /^(?:what|who|where|when|why|which|how|explain|tell me about|latest|current|news|how to)\b/i.test(lower) ||
-                /^(?:τι|ποιος|ποια|ποιο|πού|που|πότε|ποτε|πώς|πως|γιατί|γιατι|ποια είναι τα τελευταία|εξήγησε|πες μου για)\b/i.test(lower) ||
-                /^(?:क्या|कौन|कहाँ|कब|क्यों|कैसे|बताओ|समझाओ|ताज़ा|वर्तमान)/u.test(lower) ||
-                /^(?:что|кто|где|когда|почему|как|объясни|расскажи|последние|текущ)/iu.test(lower) || /[?؟;]$/.test(lower);
+            return Boolean(String(message || '').trim());
         }
 
-        async function searchInternet(query, signal) {
-            const url = new URL('https://cl0q.com/search');
-            url.search = new URLSearchParams({ q: query.slice(0, 500), limit: '5', safe: '1' }).toString();
-            const response = await fetch(url, { signal, headers: { Accept: 'application/json' }, referrerPolicy: 'no-referrer' });
-            if (!response.ok) throw new Error('Search service request failed.');
-            const payload = await response.json();
-            const rawResults = Array.isArray(payload.results) ? payload.results : Array.isArray(payload.result) ? payload.result : Array.isArray(payload.items) ? payload.items : [];
+        function normalizeSearchResults(rawResults) {
+            const clean = value => String(value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 700);
             return rawResults.map(item => {
                 try {
                     const link = new URL(item.url || item.link || item.canonical_url || '');
                     if (link.protocol !== 'https:' && link.protocol !== 'http:') return null;
-                    const clean = value => String(value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 700);
                     return { url: link.href, title: clean(item.title || item.page_title || item.h1 || item.domain || link.hostname), snippet: clean(item.snippet || item.description || item.h1 || '') };
                 } catch (error) { return null; }
             }).filter(result => result && (result.title || result.snippet)).slice(0, 5);
+        }
+
+        async function searchWikipedia(query, signal) {
+            const wikiLanguage = ({ 'en-US': 'en', 'en-GB': 'en', 'el-GR': 'el', 'hi-IN': 'hi', 'ru-RU': 'ru' })[languageSelect.value] || 'en';
+            const url = new URL('https://' + wikiLanguage + '.wikipedia.org/w/api.php');
+            url.search = new URLSearchParams({ action: 'query', list: 'search', srsearch: query.slice(0, 300), srlimit: '5', srprop: 'snippet', format: 'json', origin: '*', utf8: '1' }).toString();
+            const response = await fetch(url, { signal, referrerPolicy: 'no-referrer' });
+            if (!response.ok) throw new Error('Wikipedia search returned HTTP ' + response.status + '.');
+            const payload = await response.json();
+            const items = payload && payload.query && Array.isArray(payload.query.search) ? payload.query.search : [];
+            return normalizeSearchResults(items.map(item => ({
+                title: item.title,
+                snippet: item.snippet,
+                url: 'https://' + wikiLanguage + '.wikipedia.org/wiki/' + encodeURIComponent(String(item.title || '').replace(/ /g, '_'))
+            })));
+        }
+
+        async function searchInternet(query, signal) {
+            let primaryError = null;
+            try {
+                const url = new URL('https://cl0q.com/search');
+                url.search = new URLSearchParams({ q: query.slice(0, 500), limit: '5', safe: '1' }).toString();
+                const response = await fetch(url, { signal, headers: { Accept: 'application/json' }, referrerPolicy: 'no-referrer' });
+                if (!response.ok) throw new Error('cl0q returned HTTP ' + response.status + '.');
+                const payload = await response.json();
+                const rawResults = Array.isArray(payload.results) ? payload.results : Array.isArray(payload.result) ? payload.result : Array.isArray(payload.items) ? payload.items : [];
+                const results = normalizeSearchResults(rawResults);
+                if (results.length) return results;
+            } catch (error) {
+                if (error && error.name === 'AbortError') throw error;
+                primaryError = error;
+            }
+            try {
+                const fallbackResults = await searchWikipedia(query, signal);
+                if (fallbackResults.length) return fallbackResults;
+                if (!primaryError) return [];
+            } catch (error) {
+                if (error && error.name === 'AbortError') throw error;
+                throw new Error('Both web search providers were unavailable. ' + (primaryError && primaryError.message ? primaryError.message : '') + ' ' + (error && error.message ? error.message : ''));
+            }
+            return [];
         }
 
         function appendSearchSources(responseNode, results) {
@@ -1736,14 +1767,7 @@ Total output lines: 250
                     return;
                 }
                 if (!results.length) {
-                    const topic = detectEverydayHowTo(normalizeQuickReply(message));
-                    if (topic) {
-                        answer = everydayHowToAnswer(topic, languageSelect.value) + '\n\n' + webSearchCopy().noResults;
-                        responseNode.textContent = answer;
-                        aiHistory.push({ role: 'user', content: message }, { role: 'assistant', content: answer });
-                        aiHistory = aiHistory.slice(-8);
-                        playReply(answer);
-                    } else responseNode.textContent = webSearchCopy().noResults;
+                    responseNode.textContent = webSearchCopy().noResults;
                     statusText.textContent = copy().ready;
                     return;
                 }
@@ -1784,17 +1808,9 @@ Total output lines: 250
                 aiHistory = aiHistory.slice(-8);
                 playReply(answer);
             } catch (error) {
-                const topic = detectEverydayHowTo(normalizeQuickReply(message));
                 if (cancelRequested) {
                     responseNode.textContent = copy().stoppedLabel || 'Search stopped.';
                     statusText.textContent = copy().ready;
-                } else if (topic) {
-                    answer = everydayHowToAnswer(topic, languageSelect.value) + '\n\n' + webSearchCopy().failed;
-                    responseNode.textContent = answer;
-                    aiHistory.push({ role: 'user', content: message }, { role: 'assistant', content: answer });
-                    aiHistory = aiHistory.slice(-8);
-                    playReply(answer);
-                    statusText.textContent = webSearchCopy().failed;
                 } else {
                     responseNode.textContent = webSearchCopy().failed;
                     statusText.textContent = webSearchCopy().failed;
