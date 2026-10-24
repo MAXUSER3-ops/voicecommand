@@ -23,10 +23,33 @@
         .subtitle { margin: 8px 0 12px; color: #a9b8cc; }
         .free-note { display: inline-block; margin: 0 8px 22px 0; padding: 7px 11px; border: 1px solid #166534; border-radius: 999px; background: rgba(20, 83, 45, .25); color: #bbf7d0; font-size: .86rem; line-height: 1.4; }
         .device-note { display: inline-block; margin: 0 0 22px; padding: 7px 11px; border: 1px solid #33445f; border-radius: 999px; background: rgba(15, 23, 42, .58); color: #cbd5e1; font-size: .86rem; line-height: 1.4; }
-        .account-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: -8px 0 18px; }
-        .account-status { margin: 0; color: #9fb0c5; font-size: .88rem; line-height: 1.5; }
+        .entry-screen { margin: 28px 0 0; padding: 24px; border: 1px solid #26364f; border-radius: 20px; background: rgba(15, 23, 42, .8); box-shadow: 0 18px 50px rgba(0, 0, 0, .2); }
+        .entry-screen h2 { margin: 0 0 8px; font-size: 1.35rem; }
+        .entry-prompt, .entry-autosave-note { margin: 0 0 14px; color: #b8c6d8; line-height: 1.55; }
+        .entry-autosave-note { font-size: .9rem; color: #9fb0c5; }
+        .entry-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .entry-actions button, .whats-new-button, .dialog-close { min-height: 48px; padding: 0 16px; border-radius: 11px; font: inherit; font-weight: 700; cursor: pointer; touch-action: manipulation; }
         .google-sync-button { min-height: 44px; flex: 0 0 auto; padding: 0 14px; border: 1px solid #475569; border-radius: 10px; background: rgba(15, 23, 42, .72); color: #e2e8f0; font: inherit; font-size: .9rem; font-weight: 650; cursor: pointer; touch-action: manipulation; }
         .google-sync-button:hover { border-color: #7dd3fc; background: #172338; }
+        .entry-actions .google-sync-button { min-height: 48px; }
+        .guest-mode-button { border: 0; background: #38bdf8; color: #082f49; }
+        .guest-mode-button:hover { background: #7dd3fc; }
+        .account-status { min-height: 1.5em; margin: 12px 0 0; color: #fcd34d; font-size: .9rem; line-height: 1.5; }
+        .whats-new-button { margin-top: 8px; border: 1px solid #a16207; background: rgba(120, 53, 15, .28); color: #fde68a; }
+        .whats-new-button:hover { background: rgba(146, 64, 14, .5); }
+        .save-indicator { position: fixed; z-index: 20; top: max(10px, calc(env(safe-area-inset-top) + 8px)); right: max(12px, env(safe-area-inset-right)); display: flex; align-items: center; gap: 8px; max-width: min(360px, calc(100vw - 24px)); padding: 8px 12px; border: 1px solid #854d0e; border-radius: 999px; background: rgba(30, 24, 18, .96); color: #fed7aa; font-size: .82rem; line-height: 1.3; box-shadow: 0 8px 24px rgba(0, 0, 0, .32); }
+        .save-indicator[hidden], .chat-app[hidden], .whats-new-button[hidden] { display: none !important; }
+        .save-dot { width: 10px; height: 10px; flex: 0 0 10px; border-radius: 50%; background: #fb923c; box-shadow: 0 0 14px rgba(251, 146, 60, .85); animation: save-pulse 1s ease-in-out infinite alternate; }
+        .save-indicator.saved { border-color: #166534; background: rgba(10, 38, 27, .96); color: #bbf7d0; }
+        .save-indicator.saved .save-dot { background: #4ade80; box-shadow: 0 0 12px rgba(74, 222, 128, .7); animation: none; }
+        .save-indicator.error { border-color: #b45309; color: #ffedd5; }
+        @keyframes save-pulse { to { opacity: .45; transform: scale(.82); } }
+        dialog.whats-new-dialog { width: min(540px, calc(100vw - 24px)); max-height: min(82dvh, 640px); padding: 24px; overflow-y: auto; border: 1px solid #475569; border-radius: 18px; background: #0f172a; color: #f8fafc; box-shadow: 0 24px 80px rgba(0, 0, 0, .55); }
+        dialog.whats-new-dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(3px); }
+        .whats-new-dialog h2 { margin: 0 0 10px; }
+        .whats-new-dialog p, .whats-new-dialog li { color: #cbd5e1; line-height: 1.55; }
+        .whats-new-dialog ul { padding-left: 22px; }
+        .dialog-close { min-width: 120px; border: 0; background: #38bdf8; color: #082f49; }
         .assistant-panel { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 22px; padding: 18px 22px; border: 1px solid #26364f; border-radius: 20px; background: rgba(15, 23, 42, .76); box-shadow: 0 18px 50px rgba(0, 0, 0, .2); }
         .circle { width: 100px; height: 100px; flex-shrink: 0; touch-action: manipulation; background: #38bdf8; border: 0; border-radius: 50%; cursor: pointer; box-shadow: 0 0 26px rgba(56, 189, 248, .4); display: flex; align-items: center; justify-content: center; color: #082f49; font-size: .84rem; font-weight: 800; letter-spacing: .04em; user-select: none; transition: transform .2s, background .2s, box-shadow .2s; }
         .circle:hover { transform: scale(1.04); }
@@ -73,8 +96,9 @@
             .subtitle { margin-bottom: 8px; }
             .free-note { margin-bottom: 12px; }
             .device-note { margin-bottom: 16px; }
-            .account-entry { align-items: stretch; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-            .google-sync-button { width: 100%; }
+            .entry-screen { margin-top: 20px; padding: 18px; }
+            .entry-actions { grid-template-columns: 1fr; gap: 9px; }
+            .entry-actions .google-sync-button { width: 100%; }
             .assistant-panel { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 14px; }
             .panel-copy { min-width: 0; }
             .circle { width: 64px; height: 64px; font-size: .68rem; }
@@ -91,6 +115,9 @@
             .composer input { padding: 12px; font-size: 16px; }
             .composer button { min-width: 64px; padding: 0 14px; }
             .hint { font-size: .88rem; }
+            .save-indicator { padding: 7px; }
+            .save-label { display: none; }
+            dialog.whats-new-dialog { padding: 18px; }
         }
         @media (max-width: 360px) {
             .assistant-panel { grid-template-columns: 56px minmax(0, 1fr); gap: 10px; padding: 12px; }
@@ -109,12 +136,20 @@
             <svg class="robot-mark" role="img" aria-label="VoiceCommand robot logo" viewBox="0 0 64 64"><title>VoiceCommand robot</title><defs><linearGradient id="robotFace" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="#0b1425" stroke="#7dd3fc" stroke-width="2"/><path d="M32 9v7" stroke="#bae6fd" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="7" r="3.5" fill="#34d399"/><path d="M9 31v9m46-9v9" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round"/><rect x="13" y="17" width="38" height="36" rx="12" fill="url(#robotFace)" stroke="#bae6fd" stroke-width="1.5"/><rect x="20" y="27" width="7" height="8" rx="3.5" fill="#082f49"/><rect x="37" y="27" width="7" height="8" rx="3.5" fill="#082f49"/><path d="M23 42c2.3 3 5.3 4.5 9 4.5s6.7-1.5 9-4.5" fill="none" stroke="#ecfeff" stroke-width="2.8" stroke-linecap="round"/></svg>
             <h1>VoiceCommand</h1>
         </div>
+        <section id="entryScreen" class="entry-screen" aria-labelledby="entryTitle">
+            <h2 id="entryTitle">Welcome to VoiceCommand</h2>
+            <p class="entry-prompt" id="entryPrompt">Choose how you want to start.</p>
+            <p class="entry-autosave-note" id="entryAutosaveNote">Guest mode automatically saves chats in this browser. Keep the app open while the orange dot appears at the top right.</p>
+            <div class="entry-actions">
+                <button id="googleSyncButton" class="google-sync-button" type="button">Sync Google account</button>
+                <button id="guestModeButton" class="guest-mode-button" type="button">Continue as guest</button>
+            </div>
+            <p class="account-status" id="accountStatus" role="status" aria-live="polite"></p>
+            <button id="whatsNewButton" class="whats-new-button" type="button" hidden>What's new!</button>
+        </section>
+        <div id="chatApp" class="chat-app" hidden>
         <p class="subtitle" id="subtitle">Talk out loud or type a message to chat.</p>
         <p class="free-note" id="freeNote">Free to use · guest mode available</p>
-        <div class="account-entry">
-            <p class="account-status" id="accountStatus" role="status" aria-live="polite">Guest mode · chats save in this browser and do not sync across devices.</p>
-            <button id="googleSyncButton" class="google-sync-button" type="button">Sync Google account</button>
-        </div>
         <p class="ai-note" id="aiNote">Free on-device AI. The fast chat model downloads on first use; photo analysis downloads a separate model the first time. WebGPU is required, and photos stay on your device.</p>
         <p class="device-note" id="deviceNote">Works on phones, but runs best on a PC or laptop.</p>
         <section class="assistant-panel" aria-label="Voice controls">
@@ -163,14 +198,39 @@
         </section>
         <p class="hint" id="hint">I can help with weather in Greece, the time and date, calculations, jokes, and everyday questions.</p>
         <p class="hint" id="voiceHint">Available voices depend on your browser or device. Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>; place names by <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a>.</p>
+        </div>
+        <div id="saveIndicator" class="save-indicator" role="status" aria-live="polite" hidden>
+            <span class="save-dot" aria-hidden="true"></span>
+            <span id="saveStatusText" class="save-label">Saving… please don’t close the app.</span>
+        </div>
+        <dialog id="whatsNewDialog" class="whats-new-dialog" aria-labelledby="whatsNewTitle">
+            <h2 id="whatsNewTitle">What’s new in version 1.5.0</h2>
+            <p>A lot of updates have been made for phone use and the overall experience.</p>
+            <ul>
+                <li>Google account sync and guest mode now appear when you enter. Guest mode keeps chat history saved automatically in this browser.</li>
+                <li>An orange dot appears at the top right while a save is pending. Keep the app open until it disappears.</li>
+                <li>The phone layout has larger, easier-to-tap controls and a simpler message composer.</li>
+                <li>Chat replies use a smaller model and shorter response limit to help them arrive faster.</li>
+                <li>The app is now labeled Alpha, and this update adds a first-entry update log.</li>
+            </ul>
+            <button id="closeWhatsNewButton" class="dialog-close" type="button">Close</button>
+        </dialog>
     </main>
-        <footer class="page-footer"><strong>Current version: 1.4.0</strong> · <span class="alpha-note">Alpha · still under testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
+        <footer class="page-footer"><strong>Current version: 1.5.0</strong> · <span class="alpha-note">Alpha · still under testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const orb = document.getElementById('orb');
         const callModeButton = document.getElementById('callModeButton');
+        const entryScreen = document.getElementById('entryScreen');
+        const chatApp = document.getElementById('chatApp');
+        const guestModeButton = document.getElementById('guestModeButton');
         const googleSyncButton = document.getElementById('googleSyncButton');
         const accountStatus = document.getElementById('accountStatus');
+        const whatsNewButton = document.getElementById('whatsNewButton');
+        const whatsNewDialog = document.getElementById('whatsNewDialog');
+        const closeWhatsNewButton = document.getElementById('closeWhatsNewButton');
+        const saveIndicator = document.getElementById('saveIndicator');
+        const saveStatusText = document.getElementById('saveStatusText');
         const statusText = document.getElementById('status');
         const conversation = document.getElementById('conversation');
         const chatForm = document.getElementById('chatForm');
@@ -209,9 +269,13 @@
         let cancelRequested = false;
         let workerBlobUrl = '';
         const GUEST_CHAT_KEY = 'voicecommand-guest-chat-v1';
+        const APP_VERSION = '1.5.0';
+        const WHATS_NEW_SEEN_KEY = 'voicecommand-whats-new-seen-version';
         let restoringConversation = false;
         let hasRestoredConversation = false;
         let guestSaveTimer = 0;
+        let saveIndicatorTimer = 0;
+        let guestModeEntered = false;
         const TEXT_MODEL_ID = 'Qwen2-0.5B-Instruct-q4f16_1-MLC';
         const VISION_MODEL_ID = 'Phi-3.5-vision-instruct-q4f16_1-MLC';
 
@@ -320,6 +384,12 @@
         COPY['ru-RU'].stoppedLabel = 'Ответ остановлен.';
         COPY['ru-RU'].photoPrompt = 'Опиши, что изображено на фотографии: основные объекты, обстановку и читаемый текст.';
         COPY['en-US'].accountStatus = 'Guest mode · chats save in this browser and do not sync across devices.';
+        COPY['en-US'].entryPrompt = 'Choose an option to continue.';
+        COPY['en-US'].entryAutosaveNote = 'Auto-save is on in guest mode: chats are stored in this browser only. Keep the app open while the orange dot appears at the top right.';
+        COPY['en-US'].guestModeLabel = 'Use guest mode';
+        COPY['en-US'].savePending = 'Saving… please don’t close the app.';
+        COPY['en-US'].saveComplete = 'Saved automatically.';
+        COPY['en-US'].saveFailed = 'Auto-save failed. Keep the app open and try again.';
         COPY['en-US'].googleSyncLabel = 'Sync Google account';
         COPY['en-US'].googleSyncMessage = 'This feature is under construction, but you can use the guest mode.';
         COPY['en-US'].callModeLabel = 'Start live voice chat';
@@ -329,6 +399,12 @@
         COPY['en-US'].callModeHint = 'Live voice chat uses your microphone; browser support may vary.';
         COPY['en-US'].photoNotSaved = 'Photo not saved with this chat.';
         COPY['el-GR'].accountStatus = 'Λειτουργία επισκέπτη · οι συνομιλίες αποθηκεύονται σε αυτό το πρόγραμμα περιήγησης και δεν συγχρονίζονται μεταξύ συσκευών.';
+        COPY['el-GR'].entryPrompt = 'Διάλεξε έναν τρόπο για να συνεχίσεις.';
+        COPY['el-GR'].entryAutosaveNote = 'Η αυτόματη αποθήκευση είναι ενεργή στη λειτουργία επισκέπτη: οι συνομιλίες αποθηκεύονται μόνο σε αυτό το πρόγραμμα περιήγησης. Μην κλείσεις την εφαρμογή όσο εμφανίζεται η πορτοκαλί κουκκίδα επάνω δεξιά.';
+        COPY['el-GR'].guestModeLabel = 'Χρήση λειτουργίας επισκέπτη';
+        COPY['el-GR'].savePending = 'Αποθήκευση… μην κλείσεις την εφαρμογή.';
+        COPY['el-GR'].saveComplete = 'Αποθηκεύτηκε αυτόματα.';
+        COPY['el-GR'].saveFailed = 'Η αυτόματη αποθήκευση απέτυχε. Άφησε ανοιχτή την εφαρμογή και δοκίμασε ξανά.';
         COPY['el-GR'].googleSyncLabel = 'Συγχρονισμός λογαριασμού Google';
         COPY['el-GR'].googleSyncMessage = 'Αυτή η λειτουργία είναι υπό κατασκευή, αλλά μπορείς να χρησιμοποιήσεις τη λειτουργία επισκέπτη.';
         COPY['el-GR'].callModeLabel = 'Έναρξη ζωντανής φωνητικής συνομιλίας';
@@ -338,6 +414,12 @@
         COPY['el-GR'].callModeHint = 'Η ζωντανή φωνητική συνομιλία χρησιμοποιεί το μικρόφωνο· η υποστήριξη διαφέρει ανά πρόγραμμα περιήγησης.';
         COPY['el-GR'].photoNotSaved = 'Η φωτογραφία δεν αποθηκεύτηκε σε αυτή τη συνομιλία.';
         COPY['hi-IN'].accountStatus = 'गेस्ट मोड · चैट इस ब्राउज़र में अपने-आप सहेजी जाती है और डिवाइसों के बीच सिंक नहीं होती।';
+        COPY['hi-IN'].entryPrompt = 'जारी रखने के लिए एक विकल्प चुनें।';
+        COPY['hi-IN'].entryAutosaveNote = 'गेस्ट मोड में ऑटो-सेव चालू है: चैट सिर्फ़ इसी ब्राउज़र में सहेजी जाती है। ऊपर दाईं ओर नारंगी बिंदु दिखे तो ऐप बंद न करें।';
+        COPY['hi-IN'].guestModeLabel = 'गेस्ट मोड इस्तेमाल करें';
+        COPY['hi-IN'].savePending = 'सहेजा जा रहा है… कृपया ऐप बंद न करें।';
+        COPY['hi-IN'].saveComplete = 'अपने-आप सहेजा गया।';
+        COPY['hi-IN'].saveFailed = 'ऑटो-सेव विफल हुआ। ऐप खुला रखें और फिर कोशिश करें।';
         COPY['hi-IN'].googleSyncLabel = 'Google खाते से सिंक करें';
         COPY['hi-IN'].googleSyncMessage = 'यह सुविधा अभी बन रही है, लेकिन आप गेस्ट मोड का उपयोग कर सकते हैं।';
         COPY['hi-IN'].callModeLabel = 'लाइव वॉइस चैट शुरू करें';
@@ -347,6 +429,12 @@
         COPY['hi-IN'].callModeHint = 'लाइव वॉइस चैट आपके माइक्रोफ़ोन का उपयोग करती है; ब्राउज़र के अनुसार समर्थन अलग हो सकता है।';
         COPY['hi-IN'].photoNotSaved = 'इस चैट के साथ फ़ोटो सहेजी नहीं गई।';
         COPY['ru-RU'].accountStatus = 'Гостевой режим · беседы сохраняются в этом браузере и не синхронизируются между устройствами.';
+        COPY['ru-RU'].entryPrompt = 'Выберите способ продолжить.';
+        COPY['ru-RU'].entryAutosaveNote = 'В гостевом режиме включено автосохранение: беседы хранятся только в этом браузере. Не закрывайте приложение, пока вверху справа видна оранжевая точка.';
+        COPY['ru-RU'].guestModeLabel = 'Использовать гостевой режим';
+        COPY['ru-RU'].savePending = 'Сохранение… не закрывайте приложение.';
+        COPY['ru-RU'].saveComplete = 'Сохранено автоматически.';
+        COPY['ru-RU'].saveFailed = 'Не удалось сохранить автоматически. Оставьте приложение открытым и попробуйте ещё раз.';
         COPY['ru-RU'].googleSyncLabel = 'Синхронизация с Google';
         COPY['ru-RU'].googleSyncMessage = 'Эта функция пока находится в разработке, но вы можете использовать гостевой режим.';
         COPY['ru-RU'].callModeLabel = 'Начать голосовой разговор';
@@ -362,6 +450,9 @@
             document.documentElement.lang = languageSelect.value;
             const ids = ['subtitle','freeNote','deviceNote','languageLabel','voiceLabel','chatHeading'];
             ids.forEach((id, i) => { document.getElementById(id).textContent = c.ui[i]; });
+            document.getElementById('entryPrompt').textContent = c.entryPrompt;
+            document.getElementById('entryAutosaveNote').textContent = c.entryAutosaveNote;
+            guestModeButton.textContent = c.guestModeLabel;
             accountStatus.textContent = c.accountStatus;
             googleSyncButton.textContent = c.googleSyncLabel;
             document.getElementById('callModeHint').textContent = c.callModeHint;
@@ -396,8 +487,27 @@
             }
         }
         languageSelect.addEventListener('change', setLanguage);
+        guestModeButton.addEventListener('click', () => {
+            guestModeEntered = true;
+            entryScreen.hidden = true;
+            chatApp.hidden = false;
+            scheduleConversationSave();
+        });
         googleSyncButton.addEventListener('click', () => {
             accountStatus.textContent = copy().googleSyncMessage;
+        });
+        whatsNewButton.hidden = false;
+        try { whatsNewButton.hidden = localStorage.getItem(WHATS_NEW_SEEN_KEY) === APP_VERSION; }
+        catch (error) { whatsNewButton.hidden = false; }
+        whatsNewButton.addEventListener('click', () => {
+            whatsNewButton.hidden = true;
+            try { localStorage.setItem(WHATS_NEW_SEEN_KEY, APP_VERSION); } catch (error) { /* Keep the log available for this visit. */ }
+            if (typeof whatsNewDialog.showModal === 'function') whatsNewDialog.showModal();
+            else whatsNewDialog.setAttribute('open', '');
+        });
+        closeWhatsNewButton.addEventListener('click', () => {
+            if (typeof whatsNewDialog.close === 'function') whatsNewDialog.close();
+            else whatsNewDialog.removeAttribute('open');
         });
 
         function applyBackground(theme, save = true) {
@@ -507,15 +617,41 @@
             })).slice(-80);
         }
 
+        function setSaveIndicator(state) {
+            if (saveIndicatorTimer) {
+                clearTimeout(saveIndicatorTimer);
+                saveIndicatorTimer = 0;
+            }
+            const c = copy();
+            saveIndicator.classList.toggle('saved', state === 'saved');
+            saveIndicator.classList.toggle('error', state === 'error');
+            saveStatusText.textContent = state === 'saved' ? c.saveComplete : state === 'error' ? c.saveFailed : c.savePending;
+            saveIndicator.hidden = false;
+            if (state === 'saved' || state === 'error') {
+                saveIndicatorTimer = setTimeout(() => {
+                    saveIndicator.hidden = true;
+                    saveIndicatorTimer = 0;
+                }, state === 'saved' ? 1400 : 5000);
+            }
+        }
+
         function saveGuestConversation() {
-            if (restoringConversation) return;
-            try { localStorage.setItem(GUEST_CHAT_KEY, JSON.stringify(savedConversationMessages())); }
-            catch (error) { /* Keep the chat usable when storage is full or disabled. */ }
+            if (restoringConversation || !guestModeEntered) return;
+            if (guestSaveTimer) {
+                clearTimeout(guestSaveTimer);
+                guestSaveTimer = 0;
+            }
+            setSaveIndicator('saving');
+            try {
+                localStorage.setItem(GUEST_CHAT_KEY, JSON.stringify(savedConversationMessages()));
+                setSaveIndicator('saved');
+            } catch (error) { setSaveIndicator('error'); }
         }
 
         function scheduleConversationSave() {
-            if (restoringConversation) return;
+            if (restoringConversation || !guestModeEntered) return;
             if (guestSaveTimer) clearTimeout(guestSaveTimer);
+            setSaveIndicator('saving');
             guestSaveTimer = setTimeout(() => {
                 guestSaveTimer = 0;
                 saveGuestConversation();
