@@ -13,21 +13,25 @@
     <style>
         :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
         * { box-sizing: border-box; }
-        body { min-height: 100vh; min-height: 100svh; margin: 0; padding: max(24px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) calc(36px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); background: radial-gradient(ellipse at top, #1e3a5f 0, #0f172a 48%, #080e1c 100%); color: #f8fafc; transition: background .35s ease; }
+        body { min-height: 100vh; min-height: 100svh; margin: 0; padding: max(24px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) calc(36px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); background: radial-gradient(ellipse at top, #1e3a5f 0, #0f172a 48%, #080e1c 100%); background-attachment: fixed; color: #f8fafc; transition: background .35s ease; }
         body[data-theme="ocean"] { background: radial-gradient(ellipse at 18% 0, #115e59 0, #102b3a 42%, #080e1c 100%); }
         body[data-theme="aurora"] { background: radial-gradient(ellipse at 78% 0, #5b21b6 0, #20204b 38%, #080e1c 100%); }
         body[data-theme="sunset"] { background: radial-gradient(ellipse at 15% 0, #ea580c 0, #7c2d42 34%, #17152c 67%, #080e1c 100%); }
         body[data-theme="forest"] { background: radial-gradient(ellipse at 50% 0, #15803d 0, #064e3b 34%, #09251f 62%, #080e1c 100%); }
         body[data-theme="rose"] { background: radial-gradient(ellipse at 82% 0, #be185d 0, #581c4b 34%, #24152f 62%, #080e1c 100%); }
         body[data-theme="slate"] { background: radial-gradient(ellipse at 50% 0, #475569 0, #1e293b 42%, #0b1220 100%); }
-        .brand-header { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
-        .robot-mark { width: 56px; height: 56px; flex: 0 0 auto; filter: drop-shadow(0 0 14px rgba(56, 189, 248, .28)); }
-        main { width: min(760px, 100%); margin: 0 auto; }
+        body[data-theme="cosmic"] { background: radial-gradient(ellipse at 78% 0, #7e22ce 0, #31205d 26%, #151b3e 52%, #080e1c 100%); }
+        body[data-theme="cosmic"] main::before { background: radial-gradient(ellipse, rgba(217, 70, 239, .25), rgba(59, 130, 246, .12) 43%, transparent 72%); }
+        main { position: relative; isolation: isolate; width: min(760px, 100%); margin: 0 auto; }
+        main::before { content: ""; position: absolute; z-index: -1; top: -130px; right: -150px; width: min(560px, 90vw); height: 500px; border-radius: 50%; background: radial-gradient(ellipse, rgba(56, 189, 248, .18), rgba(99, 102, 241, .1) 42%, transparent 72%); filter: blur(16px); pointer-events: none; animation: ambient-drift 16s ease-in-out infinite alternate; }
+        .brand-header { position: relative; display: flex; align-items: center; gap: 14px; margin-bottom: 4px; padding: 12px 16px; overflow: hidden; border: 1px solid rgba(148, 163, 184, .18); border-radius: 22px; background: linear-gradient(115deg, rgba(15, 23, 42, .64), rgba(30, 41, 59, .28)); box-shadow: inset 0 1px rgba(255, 255, 255, .07), 0 16px 42px rgba(2, 6, 23, .22); backdrop-filter: blur(14px); }
+        .brand-header::after { content: ""; position: absolute; top: 0; left: 18%; width: 42%; height: 1px; background: linear-gradient(90deg, transparent, rgba(186, 230, 253, .65), transparent); }
+        .robot-mark { width: 56px; height: 56px; flex: 0 0 auto; filter: drop-shadow(0 0 14px rgba(56, 189, 248, .28)); animation: robot-float 5s ease-in-out infinite; }
         h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 3.8rem); letter-spacing: -.045em; line-height: 1.05; }
         .subtitle { margin: 8px 0 12px; color: #a9b8cc; }
         .free-note { display: inline-block; margin: 0 8px 22px 0; padding: 7px 11px; border: 1px solid #166534; border-radius: 999px; background: rgba(20, 83, 45, .25); color: #bbf7d0; font-size: .86rem; line-height: 1.4; }
         .device-note { display: inline-block; margin: 0 0 22px; padding: 7px 11px; border: 1px solid #33445f; border-radius: 999px; background: rgba(15, 23, 42, .58); color: #cbd5e1; font-size: .86rem; line-height: 1.4; }
-        .entry-screen { margin: 28px 0 0; padding: 24px; border: 1px solid #26364f; border-radius: 20px; background: rgba(15, 23, 42, .8); box-shadow: 0 18px 50px rgba(0, 0, 0, .2); }
+        .entry-screen { margin: 28px 0 0; padding: 24px; border: 1px solid rgba(125, 211, 252, .2); border-radius: 20px; background: linear-gradient(145deg, rgba(18, 31, 52, .9), rgba(15, 23, 42, .76)); box-shadow: inset 0 1px rgba(255, 255, 255, .045), 0 22px 60px rgba(0, 0, 0, .24); backdrop-filter: blur(14px); }
         .entry-screen h2 { margin: 0 0 8px; font-size: 1.35rem; }
         .entry-prompt, .entry-autosave-note { margin: 0 0 14px; color: #b8c6d8; line-height: 1.55; }
         .entry-autosave-note { font-size: .9rem; color: #9fb0c5; }
@@ -48,11 +52,19 @@
         .save-indicator.saved .save-dot { background: #4ade80; box-shadow: 0 0 12px rgba(74, 222, 128, .7); animation: none; }
         .save-indicator.error { border-color: #b45309; color: #ffedd5; }
         @keyframes save-pulse { to { opacity: .45; transform: scale(.82); } }
+        @keyframes robot-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes orb-pulse { 0%, 100% { box-shadow: 0 0 26px rgba(251, 113, 133, .38); } 50% { box-shadow: 0 0 42px rgba(251, 113, 133, .68); } }
+        @keyframes orb-pulse-speak { 0%, 100% { box-shadow: 0 0 26px rgba(196, 181, 253, .38); } 50% { box-shadow: 0 0 42px rgba(196, 181, 253, .72); } }
+        @keyframes ambient-drift { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(-28px, 18px, 0) scale(1.08); } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
         dialog.whats-new-dialog { width: min(540px, calc(100vw - 24px)); max-height: min(82dvh, 640px); padding: 24px; overflow-y: auto; border: 1px solid #475569; border-radius: 18px; background: #0f172a; color: #f8fafc; box-shadow: 0 24px 80px rgba(0, 0, 0, .55); }
         dialog.whats-new-dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(3px); }
         .whats-new-dialog h2 { margin: 0 0 10px; }
         .whats-new-dialog p, .whats-new-dialog li { color: #cbd5e1; line-height: 1.55; }
         .whats-new-dialog ul { padding-left: 22px; }
+        .release-archive { margin: 18px 0 12px; border-top: 1px solid #26364f; border-bottom: 1px solid #26364f; }
+        .release-archive summary { padding: 14px 0; color: #bae6fd; font-weight: 700; cursor: pointer; }
+        .release-archive h3 { margin: 10px 0 4px; color: #e2e8f0; font-size: 1rem; }
         .dialog-close { min-width: 120px; border: 0; background: #38bdf8; color: #082f49; }
         .chat-timeout { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; padding: 14px 16px; border: 1px solid #c2410c; border-radius: 14px; background: rgba(124, 45, 18, .3); color: #ffedd5; }
         .chat-timeout[hidden] { display: none !important; }
@@ -64,8 +76,8 @@
         .circle { width: 100px; height: 100px; flex-shrink: 0; touch-action: manipulation; background: #38bdf8; border: 0; border-radius: 50%; cursor: pointer; box-shadow: 0 0 26px rgba(56, 189, 248, .4); display: flex; align-items: center; justify-content: center; color: #082f49; font-size: .84rem; font-weight: 800; letter-spacing: .04em; user-select: none; transition: transform .2s, background .2s, box-shadow .2s; }
         .circle:hover { transform: scale(1.04); }
         .circle:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 3px; }
-        .circle.listening { background: #fb7185; color: #4c0519; box-shadow: 0 0 30px rgba(251, 113, 133, .5); }
-        .circle.speaking { background: #c4b5fd; color: #2e1065; box-shadow: 0 0 30px rgba(196, 181, 253, .5); }
+        .circle.listening { background: #fb7185; color: #4c0519; box-shadow: 0 0 30px rgba(251, 113, 133, .5); animation: orb-pulse 1.5s ease-in-out infinite; }
+        .circle.speaking { background: #c4b5fd; color: #2e1065; box-shadow: 0 0 30px rgba(196, 181, 253, .5); animation: orb-pulse-speak 1.9s ease-in-out infinite; }
         .panel-copy { text-align: left; }
         #status { margin: 0 0 14px; color: #cbd5e1; font-size: .98rem; min-height: 1.5em; }
         .call-mode-button { width: 100%; max-width: 320px; min-height: 42px; margin: 0 0 12px; padding: 0 14px; border: 1px solid #166534; border-radius: 10px; background: #14532d; color: #dcfce7; font: inherit; font-weight: 700; cursor: pointer; touch-action: manipulation; }
@@ -76,13 +88,13 @@
         .voice-row select, .language-row select, .background-row select, .mode-row select { min-width: 0; max-width: min(100%, 340px); min-height: 40px; padding: 8px 10px; border: 1px solid #33445f; border-radius: 9px; background: #111c30; color: #e2e8f0; }
         .mode-hint { margin: 4px 0 10px; color: #8293aa; font-size: .82rem; line-height: 1.45; }
         .ai-note { margin: -12px 0 22px; color: #a9b8cc; font-size: .86rem; line-height: 1.5; }
-        .chat { margin-top: 22px; border: 1px solid #26364f; border-radius: 20px; overflow: hidden; background: rgba(15, 23, 42, .82); box-shadow: 0 18px 50px rgba(0, 0, 0, .15); }
+        .chat { margin-top: 22px; border: 1px solid rgba(148, 163, 184, .2); border-radius: 20px; overflow: hidden; background: linear-gradient(145deg, rgba(15, 23, 42, .88), rgba(12, 20, 36, .78)); box-shadow: 0 18px 50px rgba(0, 0, 0, .19); backdrop-filter: blur(12px); }
         .chat-heading { padding: 14px 18px; border-bottom: 1px solid #26364f; color: #dbeafe; font-weight: 650; text-align: left; }
         #conversation { display: flex; flex-direction: column; gap: 14px; max-height: min(48vh, 430px); min-height: 190px; padding: 18px; overflow-y: auto; scroll-behavior: smooth; }
         .message { max-width: min(88%, 560px); padding: 11px 14px; border-radius: 16px; line-height: 1.5; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
         .message .speaker { display: block; margin-bottom: 3px; font-size: .73rem; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; opacity: .76; }
-        .message.assistant { align-self: flex-start; border: 1px solid #293a55; border-bottom-left-radius: 5px; background: #18263d; color: #e2e8f0; }
-        .message.user { align-self: flex-end; border-bottom-right-radius: 5px; background: #075985; color: #f0f9ff; }
+        .message.assistant { align-self: flex-start; border: 1px solid #293a55; border-bottom-left-radius: 5px; background: linear-gradient(145deg, #1b2a44, #172238); color: #e2e8f0; box-shadow: 0 8px 22px rgba(0, 0, 0, .12); }
+        .message.user { align-self: flex-end; border-bottom-right-radius: 5px; background: linear-gradient(135deg, #0c6b92, #075985); color: #f0f9ff; box-shadow: 0 8px 22px rgba(2, 132, 199, .12); }
         .composer { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-top: 1px solid #26364f; }
         .composer-row { display: flex; gap: 10px; }
         .photo-preview { display: flex; align-items: center; gap: 10px; color: #cbd5e1; font-size: .88rem; }
@@ -104,7 +116,7 @@
         .testing-note { color: #fcd34d; }
         .update-badge { display: inline-block; margin: 0 0 10px; padding: 5px 9px; border: 1px solid #0e7490; border-radius: 999px; background: rgba(8, 145, 178, .18); color: #a5f3fc !important; font-size: .76rem; font-weight: 800; letter-spacing: .09em; }
         @media (max-width: 560px) {
-            body { padding-top: max(18px, env(safe-area-inset-top)); }
+            body { padding-top: max(18px, env(safe-area-inset-top)); background-attachment: scroll; }
             .subtitle { margin-bottom: 8px; }
             .free-note { margin-bottom: 12px; }
             .device-note { margin-bottom: 16px; }
@@ -206,6 +218,7 @@
                         <option value="forest">Forest</option>
                         <option value="rose">Rose</option>
                         <option value="slate">Slate</option>
+                        <option value="cosmic">Cosmic</option>
                     </select>
                 </label>
             </div>
@@ -235,26 +248,36 @@
             <span id="saveStatusText" class="save-label">Saving… please don’t close the app.</span>
         </div>
         <dialog id="whatsNewDialog" class="whats-new-dialog" aria-labelledby="whatsNewTitle">
-            <p class="update-badge">MAJOR UPDATE</p>
-            <h2 id="whatsNewTitle">What’s new in version 1.9.0</h2>
-            <p>VoiceCommand now supports Google account sign-in and cloud chat sync. Guest mode and its browser auto-save remain available.</p>
+            <p class="update-badge">VISUAL UPDATE</p>
+            <h2 id="whatsNewTitle">What’s new in version 1.10.0</h2>
+            <p>This update adds a Cosmic background, glowing glass panels, and gentle animations. Chat and autosave behavior are unchanged.</p>
             <ul>
-                <li>Use Google sign-in to save chat text to your account and continue on another device. Photos stay on the device where they were selected.</li>
-                <li>Guest mode works as before and automatically saves chat history in the current browser.</li>
-                <li>The VoiceCommand title is larger, and the footer now says Early testing.</li>
-                <li>An orange dot appears at the top right while a save is pending. Keep the app open until it disappears.</li>
-                <li>The phone layout has larger, easier-to-tap controls and a simpler message composer.</li>
-                <li>Chat replies use a smaller model and shorter response limit to help them arrive faster.</li>
-                <li>Replies are tuned for short, natural back-and-forth chats and can follow the recent conversation.</li>
-                <li>Sending a swear word temporarily pauses chat for 2 minutes on this browser. Email addresses are ignored by the swear-word check.</li>
-                <li>Choose Astro for detailed answers, Macro for very short answers, or Chato for an ongoing conversation.</li>
-                <li>Choose Sunset, Forest, Rose, or Slate in addition to the original backgrounds.</li>
-                <li>You can reopen this update log from the entry screen any time.</li>
+                <li>Choose Cosmic for a new purple-and-blue space-inspired look.</li>
+                <li>The listening and speaking orb now gently pulses, and the robot mascot floats softly.</li>
+                <li>Cards and chat bubbles have refreshed glass effects, gradients, and softer shadows.</li>
+                <li>Animations respect your device’s reduced-motion setting.</li>
             </ul>
+            <details class="release-archive">
+                <summary>Recent updates · versions 1.9.0–1.8.0</summary>
+                <h3>Version 1.9.0</h3>
+                <ul>
+                    <li>Google sign-in and cross-device chat text sync were added through Supabase. Guest mode and its browser auto-save remain available.</li>
+                    <li>The VoiceCommand title was enlarged and the footer changed to Early testing.</li>
+                </ul>
+                <h3>Version 1.8.0</h3>
+                <ul>
+                    <li>Phone layout controls were enlarged and the message composer simplified.</li>
+                    <li>Chat replies use a smaller model and shorter response limit to help them arrive faster.</li>
+                    <li>Replies were tuned for brief, natural back-and-forth conversations.</li>
+                    <li>Astro, Macro, and Chato modes were added, along with Sunset, Forest, Rose, and Slate backgrounds.</li>
+                    <li>Autosave, the orange save indicator, and the temporary two-minute profanity timeout were added.</li>
+                </ul>
+            </details>
+            <p>You can reopen this update log from the entry screen any time.</p>
             <button id="closeWhatsNewButton" class="dialog-close" type="button">Close</button>
         </dialog>
     </main>
-        <footer class="page-footer"><strong>Current version: 1.9.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
+        <footer class="page-footer"><strong>Current version: 1.10.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -412,13 +435,13 @@
         };
         COPY['en-GB'] = COPY['en-US'];
         COPY['en-US'].backgroundLabel = 'Background';
-        COPY['en-US'].backgrounds = ['Midnight', 'Ocean', 'Aurora', 'Sunset', 'Forest', 'Rose', 'Slate'];
+        COPY['en-US'].backgrounds = ['Midnight', 'Ocean', 'Aurora', 'Sunset', 'Forest', 'Rose', 'Slate', 'Cosmic'];
         COPY['el-GR'].backgroundLabel = 'Φόντο';
-        COPY['el-GR'].backgrounds = ['Μεσάνυχτα', 'Ωκεανός', 'Σέλας', 'Ηλιοβασίλεμα', 'Δάσος', 'Ροζ', 'Γραφίτης'];
+        COPY['el-GR'].backgrounds = ['Μεσάνυχτα', 'Ωκεανός', 'Σέλας', 'Ηλιοβασίλεμα', 'Δάσος', 'Ροζ', 'Γραφίτης', 'Κοσμικό'];
         COPY['hi-IN'].backgroundLabel = 'पृष्ठभूमि';
-        COPY['hi-IN'].backgrounds = ['मिडनाइट', 'समुद्र', 'ऑरोरा', 'सूर्यास्त', 'जंगल', 'रोज़', 'स्लेट'];
+        COPY['hi-IN'].backgrounds = ['मिडनाइट', 'समुद्र', 'ऑरोरा', 'सूर्यास्त', 'जंगल', 'रोज़', 'स्लेट', 'कॉस्मिक'];
         COPY['ru-RU'].backgroundLabel = 'Фон';
-        COPY['ru-RU'].backgrounds = ['Полночь', 'Океан', 'Аврора', 'Закат', 'Лес', 'Розовый', 'Графит'];
+        COPY['ru-RU'].backgrounds = ['Полночь', 'Океан', 'Аврора', 'Закат', 'Лес', 'Розовый', 'Графит', 'Космос'];
         COPY['en-US'].aiNote = 'Free on-device AI. One fast chat model downloads the first time; photo analysis downloads a separate model the first time. WebGPU is required, and photos stay on your device.';
         COPY['el-GR'].aiNote = 'Δωρεάν AI στη συσκευή σου. Ένα γρήγορο μοντέλο συνομιλίας κατεβαίνει την πρώτη φορά· η ανάλυση φωτογραφιών κατεβάζει ξεχωριστό μοντέλο την πρώτη φορά. Απαιτείται WebGPU και οι φωτογραφίες μένουν στη συσκευή σου.';
         COPY['hi-IN'].aiNote = 'मुफ़्त ऑन-डिवाइस AI। एक तेज़ चैट मॉडल पहली बार डाउनलोड होगा; फ़ोटो विश्लेषण के लिए अलग मॉडल पहली बार उपयोग पर डाउनलोड होगा। WebGPU ज़रूरी है और फ़ोटो आपके डिवाइस पर ही रहती हैं।';
@@ -606,7 +629,7 @@
             updateCallModeButton();
             document.getElementById('backgroundLabel').textContent = c.backgroundLabel || 'Background';
             Array.from(backgroundSelect.options).forEach((option, index) => {
-                option.textContent = (c.backgrounds || ['Midnight', 'Ocean', 'Aurora', 'Sunset', 'Forest', 'Rose', 'Slate'])[index];
+                option.textContent = (c.backgrounds || ['Midnight', 'Ocean', 'Aurora', 'Sunset', 'Forest', 'Rose', 'Slate', 'Cosmic'])[index];
             });
             messageInput.placeholder = c.ui[6];
             messageInput.setAttribute('aria-label', c.ui[6]);
@@ -659,7 +682,7 @@
         });
 
         function applyBackground(theme, save = true) {
-            const allowedThemes = ['midnight', 'ocean', 'aurora', 'sunset', 'forest', 'rose', 'slate'];
+            const allowedThemes = ['midnight', 'ocean', 'aurora', 'sunset', 'forest', 'rose', 'slate', 'cosmic'];
             const selectedTheme = allowedThemes.includes(theme) ? theme : 'midnight';
             document.body.dataset.theme = selectedTheme;
             backgroundSelect.value = selectedTheme;
