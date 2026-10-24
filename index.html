@@ -62,6 +62,22 @@
         .whats-new-dialog h2 { margin: 0 0 10px; }
         .whats-new-dialog p, .whats-new-dialog li { color: #cbd5e1; line-height: 1.55; }
         .whats-new-dialog ul { padding-left: 22px; }
+        dialog.delete-history-dialog { width: min(430px, calc(100vw - 28px)); padding: 26px; border: 1px solid rgba(248, 113, 113, .32); border-radius: 22px; background: linear-gradient(145deg, #172238, #0f172a); color: #f8fafc; box-shadow: 0 28px 90px rgba(0, 0, 0, .58); }
+        dialog.delete-history-dialog::backdrop { background: rgba(2, 6, 23, .76); backdrop-filter: blur(6px); }
+        .delete-history-dialog h2 { margin: 0 0 9px; font-size: 1.28rem; }
+        .delete-history-dialog p { margin: 0; color: #cbd5e1; line-height: 1.55; }
+        .delete-dialog-icon { display: grid; width: 46px; height: 46px; margin-bottom: 16px; place-items: center; border: 1px solid rgba(248, 113, 113, .3); border-radius: 15px; background: rgba(127, 29, 29, .26); color: #fca5a5; }
+        .delete-dialog-icon svg { width: 22px; height: 22px; }
+        .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+        .dialog-actions button { min-height: 44px; padding: 0 14px; border-radius: 11px; font: inherit; font-weight: 750; cursor: pointer; }
+        .secondary-button { border: 1px solid #475569; background: rgba(15, 23, 42, .72); color: #e2e8f0; }
+        .destructive-button { border: 1px solid #b91c1c; background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; box-shadow: 0 8px 20px rgba(185, 28, 28, .22); }
+        .dialog-actions button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        button:active { transform: translateY(0) scale(.985); }
+        button:disabled { cursor: wait; opacity: .65; }
+        .google-sync-button, .guest-mode-button, .whats-new-button, .photo-button, .dialog-close { transition: transform .16s ease, box-shadow .16s ease, filter .16s ease; }
+        .google-sync-button:hover, .guest-mode-button:hover, .whats-new-button:hover, .photo-button:hover, .dialog-close:hover { transform: translateY(-1px); filter: brightness(1.08); }
+        @keyframes message-arrive { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         .release-archive { margin: 18px 0 12px; border-top: 1px solid #26364f; border-bottom: 1px solid #26364f; }
         .release-archive summary { padding: 14px 0; color: #bae6fd; font-weight: 700; cursor: pointer; }
         .release-archive h3 { margin: 10px 0 4px; color: #e2e8f0; font-size: 1rem; }
@@ -72,7 +88,7 @@
         .chat-timeout h2 { margin: 0 0 4px; font-size: 1rem; }
         .chat-timeout p { margin: 0; color: #fed7aa; font-size: .88rem; line-height: 1.45; }
         .timeout-countdown { min-width: 64px; color: #fdba74; font-size: 1.3rem; font-variant-numeric: tabular-nums; font-weight: 800; text-align: center; }
-        .assistant-panel { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 22px; padding: 18px 22px; border: 1px solid #26364f; border-radius: 20px; background: rgba(15, 23, 42, .76); box-shadow: 0 18px 50px rgba(0, 0, 0, .2); }
+        .assistant-panel { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 22px; padding: 20px 24px; border: 1px solid rgba(125, 211, 252, .18); border-radius: 24px; background: linear-gradient(145deg, rgba(21, 35, 58, .88), rgba(12, 20, 36, .78)); box-shadow: inset 0 1px rgba(255, 255, 255, .04), 0 22px 54px rgba(0, 0, 0, .2); backdrop-filter: blur(14px); }
         .circle { width: 100px; height: 100px; flex-shrink: 0; touch-action: manipulation; background: #38bdf8; border: 0; border-radius: 50%; cursor: pointer; box-shadow: 0 0 26px rgba(56, 189, 248, .4); display: flex; align-items: center; justify-content: center; color: #082f49; font-size: .84rem; font-weight: 800; letter-spacing: .04em; user-select: none; transition: transform .2s, background .2s, box-shadow .2s; }
         .circle:hover { transform: scale(1.04); }
         .circle:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 3px; }
@@ -80,7 +96,16 @@
         .circle.speaking { background: #c4b5fd; color: #2e1065; box-shadow: 0 0 30px rgba(196, 181, 253, .5); animation: orb-pulse-speak 1.9s ease-in-out infinite; }
         .panel-copy { text-align: left; }
         #status { margin: 0 0 14px; color: #cbd5e1; font-size: .98rem; min-height: 1.5em; }
-        .call-mode-button { width: 100%; max-width: 320px; min-height: 42px; margin: 0 0 12px; padding: 0 14px; border: 1px solid #166534; border-radius: 10px; background: #14532d; color: #dcfce7; font: inherit; font-weight: 700; cursor: pointer; touch-action: manipulation; }
+        #status.status-error { color: #fecaca; }
+        .model-progress { margin: 8px 0 14px; padding: 12px; border: 1px solid rgba(125, 211, 252, .2); border-radius: 14px; background: rgba(8, 20, 37, .58); }
+        .model-progress[hidden] { display: none; }
+        .model-progress-copy { display: flex; justify-content: space-between; gap: 10px; color: #dbeafe; font-size: .82rem; font-weight: 700; }
+        .model-progress-track { height: 9px; margin-top: 9px; overflow: hidden; border-radius: 999px; background: #0b1425; }
+        .model-progress-track > span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22d3ee, #818cf8); transition: width .2s ease; }
+        .model-progress-track.indeterminate > span { width: 34%; animation: progress-sheen 1.1s ease-in-out infinite alternate; }
+        .model-progress-text { margin: 7px 0 0; color: #9fb0c5; font-size: .78rem; line-height: 1.4; }
+        @keyframes progress-sheen { to { transform: translateX(190%); } }
+        .call-mode-button { width: 100%; max-width: 320px; min-height: 44px; margin: 0 0 12px; padding: 0 14px; border: 1px solid #166534; border-radius: 12px; background: linear-gradient(135deg, #166534, #14532d); color: #dcfce7; font: inherit; font-weight: 700; cursor: pointer; touch-action: manipulation; transition: transform .16s ease, box-shadow .16s ease, background .16s ease; box-shadow: 0 8px 20px rgba(20, 83, 45, .2); }
         .call-mode-button:hover { background: #166534; }
         .call-mode-button[aria-pressed="true"] { border-color: #9f1239; background: #881337; color: #ffe4e6; }
         .call-mode-note { margin: -4px 0 12px; color: #9fb0c5; font-size: .82rem; line-height: 1.45; }
@@ -88,14 +113,19 @@
         .voice-row select, .language-row select, .background-row select, .mode-row select { min-width: 0; max-width: min(100%, 340px); min-height: 40px; padding: 8px 10px; border: 1px solid #33445f; border-radius: 9px; background: #111c30; color: #e2e8f0; }
         .mode-hint { margin: 4px 0 10px; color: #8293aa; font-size: .82rem; line-height: 1.45; }
         .ai-note { margin: -12px 0 22px; color: #a9b8cc; font-size: .86rem; line-height: 1.5; }
-        .chat { margin-top: 22px; border: 1px solid rgba(148, 163, 184, .2); border-radius: 20px; overflow: hidden; background: linear-gradient(145deg, rgba(15, 23, 42, .88), rgba(12, 20, 36, .78)); box-shadow: 0 18px 50px rgba(0, 0, 0, .19); backdrop-filter: blur(12px); }
-        .chat-heading { padding: 14px 18px; border-bottom: 1px solid #26364f; color: #dbeafe; font-weight: 650; text-align: left; }
-        #conversation { display: flex; flex-direction: column; gap: 14px; max-height: min(48vh, 430px); min-height: 190px; padding: 18px; overflow-y: auto; scroll-behavior: smooth; }
-        .message { max-width: min(88%, 560px); padding: 11px 14px; border-radius: 16px; line-height: 1.5; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
+        .chat { margin-top: 22px; border: 1px solid rgba(148, 163, 184, .2); border-radius: 24px; overflow: hidden; background: linear-gradient(145deg, rgba(15, 23, 42, .9), rgba(12, 20, 36, .84)); box-shadow: 0 24px 64px rgba(0, 0, 0, .22); backdrop-filter: blur(14px); }
+        .chat-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 62px; padding: 12px 18px; border-bottom: 1px solid rgba(148, 163, 184, .14); color: #e0f2fe; font-weight: 750; letter-spacing: .01em; text-align: left; }
+        .delete-history-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 12px; border: 1px solid rgba(248, 113, 113, .32); border-radius: 11px; background: rgba(127, 29, 29, .2); color: #fecaca; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: transform .16s ease, background .16s ease, border-color .16s ease; }
+        .delete-history-button:hover { border-color: rgba(248, 113, 113, .65); background: rgba(127, 29, 29, .38); }
+        .delete-history-button svg { width: 16px; height: 16px; flex: 0 0 auto; }
+        #conversation { display: flex; flex-direction: column; gap: 14px; max-height: min(48vh, 430px); min-height: 190px; padding: 20px; overflow-y: auto; scroll-behavior: smooth; background: linear-gradient(180deg, rgba(30, 41, 59, .12), transparent 45%); }
+        #conversation::-webkit-scrollbar { width: 9px; }
+        #conversation::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 99px; background: rgba(148, 163, 184, .34); background-clip: padding-box; }
+        .message { max-width: min(88%, 560px); padding: 12px 15px; border-radius: 18px; line-height: 1.55; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; animation: message-arrive .2s ease-out both; }
         .message .speaker { display: block; margin-bottom: 3px; font-size: .73rem; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; opacity: .76; }
         .message.assistant { align-self: flex-start; border: 1px solid #293a55; border-bottom-left-radius: 5px; background: linear-gradient(145deg, #1b2a44, #172238); color: #e2e8f0; box-shadow: 0 8px 22px rgba(0, 0, 0, .12); }
         .message.user { align-self: flex-end; border-bottom-right-radius: 5px; background: linear-gradient(135deg, #0c6b92, #075985); color: #f0f9ff; box-shadow: 0 8px 22px rgba(2, 132, 199, .12); }
-        .composer { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-top: 1px solid #26364f; }
+        .composer { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-top: 1px solid rgba(148, 163, 184, .14); background: rgba(8, 14, 28, .38); }
         .composer-row { display: flex; gap: 10px; }
         .photo-preview { display: flex; align-items: center; gap: 10px; color: #cbd5e1; font-size: .88rem; }
         .photo-preview[hidden] { display: none; }
@@ -105,9 +135,10 @@
         .photo-button:hover { background: #22334d; }
         .image-message { display: block; max-width: min(100%, 260px); max-height: 260px; margin-top: 10px; border: 1px solid #33445f; border-radius: 12px; object-fit: contain; }
         .photo-not-saved { display: block; margin-top: 8px; color: #a9b8cc; font-size: .8rem; }
-        .composer input { flex: 1; min-width: 0; min-height: 48px; padding: 13px 14px; border: 1px solid #33445f; border-radius: 12px; background: #0b1425; color: #f8fafc; font: inherit; }
+        .composer input { flex: 1; min-width: 0; min-height: 50px; padding: 13px 16px; border: 1px solid #33445f; border-radius: 15px; background: rgba(8, 20, 37, .9); color: #f8fafc; font: inherit; box-shadow: inset 0 1px rgba(255, 255, 255, .025); transition: border-color .16s ease, box-shadow .16s ease; }
+        .composer input:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, .14); outline: none; }
         .composer input::placeholder { color: #8293aa; }
-        .composer button { min-height: 48px; padding: 0 20px; border: 0; touch-action: manipulation; border-radius: 12px; background: #38bdf8; color: #082f49; font: inherit; font-weight: 750; cursor: pointer; }
+        .composer button { min-height: 50px; padding: 0 20px; border: 0; touch-action: manipulation; border-radius: 14px; background: linear-gradient(135deg, #7dd3fc, #38bdf8); color: #082f49; font: inherit; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(14, 165, 233, .2); transition: transform .16s ease, box-shadow .16s ease, filter .16s ease; }
         .composer button:hover { background: #7dd3fc; }
         .hint { margin: 20px auto 0; color: #9fb0c5; line-height: 1.6; text-align: left; font-size: .92rem; }
         .hint a { color: #7dd3fc; }
@@ -123,6 +154,12 @@
             .entry-screen { margin-top: 20px; padding: 18px; }
             .entry-actions { grid-template-columns: 1fr; gap: 9px; }
             .entry-actions .google-sync-button { width: 100%; }
+            .chat-heading { padding: 11px 12px; }
+            .delete-history-button { min-height: 36px; padding: 0 9px; font-size: .76rem; }
+            #conversation { padding: 14px; }
+            .composer { padding: 12px; }
+            .dialog-actions { flex-direction: column-reverse; }
+            .dialog-actions button { width: 100%; }
             .assistant-panel { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 14px; }
             .panel-copy { min-width: 0; }
             .circle { width: 64px; height: 64px; font-size: .68rem; }
@@ -187,6 +224,11 @@
             <button id="orb" class="circle" type="button" aria-label="Start speaking">TALK</button>
             <div class="panel-copy">
                 <p id="status" role="status" aria-live="polite">Ready when you are.</p>
+                <div id="modelProgress" class="model-progress" hidden role="status" aria-live="polite">
+                    <div class="model-progress-copy"><span id="modelProgressLabel">Loading chat model</span><span id="modelProgressPercent">0%</span></div>
+                    <div id="modelProgressTrack" class="model-progress-track" role="progressbar" aria-label="Model download progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="modelProgressBar"></span></div>
+                    <p id="modelProgressText" class="model-progress-text">The first download may take a while.</p>
+                </div>
                 <button id="callModeButton" class="call-mode-button" type="button" aria-pressed="false">Start live voice chat</button>
                 <p class="call-mode-note" id="callModeHint">Live voice chat uses your microphone; browser support may vary.</p>
                 <label class="mode-row" for="chatModeSelect"><span id="chatModeLabel">Chat mode</span>
@@ -224,7 +266,7 @@
             </div>
         </section>
         <section class="chat" aria-label="Conversation">
-            <div class="chat-heading" id="chatHeading">Conversation</div>
+            <div class="chat-heading"><span id="chatHeading">Conversation</span><button id="deleteHistoryButton" class="delete-history-button" type="button" aria-haspopup="dialog"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg><span id="deleteHistoryButtonLabel">Delete history</span></button></div>
             <div id="conversation" role="log" aria-live="polite" aria-relevant="additions"></div>
             <form id="chatForm" class="composer">
                 <div class="photo-preview" id="photoPreview" hidden>
@@ -248,14 +290,15 @@
             <span id="saveStatusText" class="save-label">Saving… please don’t close the app.</span>
         </div>
         <dialog id="whatsNewDialog" class="whats-new-dialog" aria-labelledby="whatsNewTitle">
-            <p class="update-badge">VISUAL UPDATE</p>
-            <h2 id="whatsNewTitle">What’s new in version 1.10.0</h2>
-            <p>This update adds a Cosmic background, glowing glass panels, and gentle animations. Chat and autosave behavior are unchanged.</p>
+            <p class="update-badge">CHAT & ACCESSIBILITY UPDATE</p>
+            <h2 id="whatsNewTitle">What’s new in version 1.11.0</h2>
+            <p>This update adds clearer history controls, refreshed chat styling, model download progress, and a helpful WebGPU compatibility message.</p>
             <ul>
-                <li>Choose Cosmic for a new purple-and-blue space-inspired look.</li>
-                <li>The listening and speaking orb now gently pulses, and the robot mascot floats softly.</li>
-                <li>Cards and chat bubbles have refreshed glass effects, gradients, and softer shadows.</li>
-                <li>Animations respect your device’s reduced-motion setting.</li>
+                <li>Delete the current chat history from this device and, when signed in, the synced account.</li>
+                <li>See model-download progress and a percentage while on-device AI loads.</li>
+                <li>Astro, Macro, and Chato now explain their conversation styles more clearly.</li>
+                <li>If WebGPU is unavailable, VoiceCommand explains how to try a supported browser or PC/laptop.</li>
+                <li>The chat, controls, and messages have a refreshed modern look.</li>
             </ul>
             <details class="release-archive">
                 <summary>Recent updates · versions 1.9.0–1.8.0</summary>
@@ -276,8 +319,14 @@
             <p>You can reopen this update log from the entry screen any time.</p>
             <button id="closeWhatsNewButton" class="dialog-close" type="button">Close</button>
         </dialog>
+        <dialog id="deleteHistoryDialog" class="delete-history-dialog" aria-labelledby="deleteHistoryTitle" aria-describedby="deleteHistoryDescription">
+            <div class="delete-dialog-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></div>
+            <h2 id="deleteHistoryTitle">Delete this chat history?</h2>
+            <p id="deleteHistoryDescription">This clears your chat on this device and, if you’re signed in, your synced account. You can’t undo this.</p>
+            <div class="dialog-actions"><button id="cancelDeleteHistoryButton" class="secondary-button" type="button">Cancel</button><button id="confirmDeleteHistoryButton" class="destructive-button" type="button">Delete history</button></div>
+        </dialog>
     </main>
-        <footer class="page-footer"><strong>Current version: 1.10.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
+        <footer class="page-footer"><strong>Current version: 1.11.0</strong> · <span class="testing-note">Early testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -291,6 +340,19 @@
         const whatsNewButton = document.getElementById('whatsNewButton');
         const whatsNewDialog = document.getElementById('whatsNewDialog');
         const closeWhatsNewButton = document.getElementById('closeWhatsNewButton');
+        const deleteHistoryButton = document.getElementById('deleteHistoryButton');
+        const deleteHistoryButtonLabel = document.getElementById('deleteHistoryButtonLabel');
+        const deleteHistoryDialog = document.getElementById('deleteHistoryDialog');
+        const deleteHistoryTitle = document.getElementById('deleteHistoryTitle');
+        const deleteHistoryDescription = document.getElementById('deleteHistoryDescription');
+        const cancelDeleteHistoryButton = document.getElementById('cancelDeleteHistoryButton');
+        const confirmDeleteHistoryButton = document.getElementById('confirmDeleteHistoryButton');
+        const modelProgress = document.getElementById('modelProgress');
+        const modelProgressLabel = document.getElementById('modelProgressLabel');
+        const modelProgressPercent = document.getElementById('modelProgressPercent');
+        const modelProgressTrack = document.getElementById('modelProgressTrack');
+        const modelProgressBar = document.getElementById('modelProgressBar');
+        const modelProgressText = document.getElementById('modelProgressText');
         const chatTimeout = document.getElementById('chatTimeout');
         const chatTimeoutTitle = document.getElementById('chatTimeoutTitle');
         const chatTimeoutText = document.getElementById('chatTimeoutText');
@@ -569,31 +631,38 @@
         COPY['en-US'].chatModeLabel = 'Chat mode';
         COPY['en-US'].chatModeNames = ['Astro', 'Macro', 'Chato'];
         COPY['en-US'].chatModeHints = [
-            'Astro gives fuller explanations, examples, and useful steps. Each reply stands on its own.',
-            'Macro keeps answers very short. Each reply stands on its own.',
-            'Chato is the only mode that remembers more recent context for an ongoing conversation.'
+            'Astro gives fuller explanations, examples, and useful steps. Best for learning a topic or seeing the steps.',
+            'Macro keeps answers very short and direct. Best for quick questions.',
+            'Chato remembers recent context. Best for an ongoing back-and-forth conversation.'
         ];
         COPY['el-GR'].chatModeLabel = 'Λειτουργία συνομιλίας';
         COPY['el-GR'].chatModeNames = ['Astro', 'Macro', 'Chato'];
         COPY['el-GR'].chatModeHints = [
-            'Το Astro δίνει πιο αναλυτικές εξηγήσεις, παραδείγματα και χρήσιμα βήματα. Κάθε απάντηση είναι αυτόνομη.',
-            'Το Macro δίνει πολύ σύντομες απαντήσεις. Κάθε απάντηση είναι αυτόνομη.',
-            'Μόνο το Chato θυμάται περισσότερο πρόσφατο πλαίσιο και συνεχίζει τη συνομιλία.'
+            'Το Astro δίνει αναλυτικές εξηγήσεις, παραδείγματα και βήματα. Ιδανικό για να μάθεις ένα θέμα.',
+            'Το Macro απαντά πολύ σύντομα και άμεσα. Ιδανικό για γρήγορες ερωτήσεις.',
+            'Το Chato θυμάται το πρόσφατο πλαίσιο. Ιδανικό για συνεχή συζήτηση.'
         ];
         COPY['hi-IN'].chatModeLabel = 'चैट मोड';
         COPY['hi-IN'].chatModeNames = ['Astro', 'Macro', 'Chato'];
         COPY['hi-IN'].chatModeHints = [
-            'Astro विस्तार से समझाता है, उदाहरण और उपयोगी कदम देता है। हर जवाब अलग होता है।',
-            'Macro बहुत छोटे जवाब देता है। हर जवाब अलग होता है।',
-            'सिर्फ़ Chato हाल का संदर्भ याद रखता है और बातचीत जारी रखता है।'
+            'Astro विस्तार से समझाता है और उदाहरण देता है। किसी विषय को सीखने के लिए अच्छा है।',
+            'Macro छोटे और सीधे जवाब देता है। जल्दी सवाल पूछने के लिए अच्छा है।',
+            'Chato हाल का संदर्भ याद रखता है। लगातार बातचीत के लिए अच्छा है।'
         ];
         COPY['ru-RU'].chatModeLabel = 'Режим чата';
         COPY['ru-RU'].chatModeNames = ['Astro', 'Macro', 'Chato'];
         COPY['ru-RU'].chatModeHints = [
-            'Astro отвечает подробно, с объяснениями, примерами и полезными шагами. Каждый ответ самостоятелен.',
-            'Macro отвечает очень кратко. Каждый ответ самостоятелен.',
-            'Только Chato помнит больше недавнего контекста и поддерживает беседу.'
+            'Astro отвечает подробно и приводит примеры. Подходит, чтобы разобраться в теме.',
+            'Macro отвечает коротко и по делу. Подходит для быстрых вопросов.',
+            'Chato помнит недавний контекст. Подходит для продолжительного разговора.'
         ];
+        const NEW_UI_COPY = {
+            'en-US': { deleteHistory: 'Delete history', deleteTitle: 'Delete this chat history?', deleteDescription: 'This clears your chat on this device and, if you’re signed in, your synced account. You can’t undo this.', cancel: 'Cancel', deleted: 'Chat history cleared.', deleteError: 'Chat cleared here, but cloud sync failed. Try again when online.', loadingChat: 'Loading chat model', loadingPhoto: 'Loading photo model', preparing: 'Preparing on-device AI…', gpuUnavailable: 'This browser or device can’t run WebGPU. Try a recent Chrome or Edge, or use a supported PC/laptop. Guest mode remains available.', aiStartFailed: 'AI could not start. Check your connection and available device memory, then try again.', progressAria: 'Model download progress' },
+            'el-GR': { deleteHistory: 'Διαγραφή ιστορικού', deleteTitle: 'Να διαγραφεί το ιστορικό συνομιλίας;', deleteDescription: 'Η συνομιλία θα διαγραφεί από αυτή τη συσκευή και, αν έχεις συνδεθεί, από τον συγχρονισμένο λογαριασμό σου. Δεν γίνεται αναίρεση.', cancel: 'Ακύρωση', deleted: 'Το ιστορικό συνομιλίας διαγράφηκε.', deleteError: 'Η συνομιλία διαγράφηκε εδώ, αλλά απέτυχε ο συγχρονισμός. Δοκίμασε ξανά όταν είσαι συνδεδεμένος.', loadingChat: 'Φόρτωση μοντέλου συνομιλίας', loadingPhoto: 'Φόρτωση μοντέλου φωτογραφιών', preparing: 'Προετοιμασία της τοπικής τεχνητής νοημοσύνης…', gpuUnavailable: 'Αυτό το πρόγραμμα περιήγησης ή η συσκευή δεν υποστηρίζει WebGPU. Δοκίμασε πρόσφατο Chrome ή Edge ή έναν συμβατό υπολογιστή. Η λειτουργία επισκέπτη παραμένει διαθέσιμη.', aiStartFailed: 'Δεν ξεκίνησε η τεχνητή νοημοσύνη. Έλεγξε τη σύνδεση και τη διαθέσιμη μνήμη και δοκίμασε ξανά.', progressAria: 'Πρόοδος λήψης μοντέλου' },
+            'hi-IN': { deleteHistory: 'इतिहास मिटाएँ', deleteTitle: 'यह चैट इतिहास मिटाएँ?', deleteDescription: 'यह चैट इस डिवाइस से और, साइन इन होने पर, आपके सिंक किए गए खाते से मिट जाएगी। इसे वापस नहीं किया जा सकता।', cancel: 'रद्द करें', deleted: 'चैट इतिहास मिटा दिया गया।', deleteError: 'चैट यहाँ मिट गई, लेकिन क्लाउड सिंक विफल हुआ। ऑनलाइन होने पर फिर कोशिश करें।', loadingChat: 'चैट मॉडल लोड हो रहा है', loadingPhoto: 'फ़ोटो मॉडल लोड हो रहा है', preparing: 'डिवाइस पर AI तैयार हो रहा है…', gpuUnavailable: 'यह ब्राउज़र या डिवाइस WebGPU नहीं चला सकता। नया Chrome या Edge आज़माएँ, या किसी समर्थित PC/laptop का उपयोग करें। गेस्ट मोड उपलब्ध है।', aiStartFailed: 'AI शुरू नहीं हो सका। इंटरनेट और डिवाइस की उपलब्ध मेमोरी जाँचकर फिर कोशिश करें।', progressAria: 'मॉडल डाउनलोड प्रगति' },
+            'ru-RU': { deleteHistory: 'Удалить историю', deleteTitle: 'Удалить историю этого чата?', deleteDescription: 'Чат будет удалён с этого устройства и, если вы вошли в аккаунт, из синхронизированной копии. Отменить это нельзя.', cancel: 'Отмена', deleted: 'История чата удалена.', deleteError: 'Чат удалён здесь, но синхронизация не удалась. Повторите попытку, когда появится интернет.', loadingChat: 'Загрузка модели чата', loadingPhoto: 'Загрузка модели для фото', preparing: 'Подготовка локального ИИ…', gpuUnavailable: 'Этот браузер или устройство не поддерживает WebGPU. Попробуйте свежую версию Chrome или Edge либо совместимый ПК/ноутбук. Гостевой режим доступен.', aiStartFailed: 'Не удалось запустить ИИ. Проверьте интернет и свободную память устройства и попробуйте снова.', progressAria: 'Ход загрузки модели' }
+        };
+        function newUiCopy() { return NEW_UI_COPY[languageSelect.value] || NEW_UI_COPY['en-US']; }
         function copy() { return COPY[languageSelect.value] || COPY['en-US']; }
         function setAccountStatus(key) {
             accountStatusKey = key;
@@ -618,6 +687,13 @@
                 option.textContent = c.chatModeNames[index] || option.value;
             });
             updateChatModeHint();
+            const uiText = newUiCopy();
+            deleteHistoryButtonLabel.textContent = uiText.deleteHistory;
+            deleteHistoryTitle.textContent = uiText.deleteTitle;
+            deleteHistoryDescription.textContent = uiText.deleteDescription;
+            cancelDeleteHistoryButton.textContent = uiText.cancel;
+            confirmDeleteHistoryButton.textContent = uiText.deleteHistory;
+            modelProgressTrack.setAttribute('aria-label', uiText.progressAria);
             document.getElementById('entryPrompt').textContent = c.entryPrompt;
             document.getElementById('entryAutosaveNote').textContent = c.entryAutosaveNote;
             guestModeButton.textContent = c.guestModeLabel;
@@ -680,6 +756,56 @@
             if (typeof whatsNewDialog.close === 'function') whatsNewDialog.close();
             else whatsNewDialog.removeAttribute('open');
         });
+        deleteHistoryButton.addEventListener('click', () => {
+            if (typeof deleteHistoryDialog.showModal === 'function') deleteHistoryDialog.showModal();
+            else deleteHistoryDialog.setAttribute('open', '');
+        });
+        cancelDeleteHistoryButton.addEventListener('click', () => {
+            if (typeof deleteHistoryDialog.close === 'function') deleteHistoryDialog.close();
+            else deleteHistoryDialog.removeAttribute('open');
+        });
+        confirmDeleteHistoryButton.addEventListener('click', async () => {
+            confirmDeleteHistoryButton.disabled = true;
+            if (typeof deleteHistoryDialog.close === 'function') deleteHistoryDialog.close();
+            else deleteHistoryDialog.removeAttribute('open');
+            try { await clearChatHistory(); }
+            finally { confirmDeleteHistoryButton.disabled = false; }
+        });
+
+        async function clearChatHistory() {
+            if (callModeActive) endCallMode();
+            if (isGenerating || isSpeaking) stopGeneration();
+            if (isModelLoading) cancelModelLoading();
+            if (guestSaveTimer) { clearTimeout(guestSaveTimer); guestSaveTimer = 0; }
+            if (cloudSyncTimer) { clearTimeout(cloudSyncTimer); cloudSyncTimer = 0; }
+            restoringConversation = true;
+            conversation.replaceChildren();
+            aiHistory = [];
+            hasRestoredConversation = true;
+            restoringConversation = false;
+            const timestamp = String(Date.now());
+            let stored = false;
+            try {
+                if (syncUserId) {
+                    localStorage.setItem(ACCOUNT_CHAT_KEY_PREFIX + syncUserId, '[]');
+                    localStorage.setItem(ACCOUNT_UPDATED_KEY_PREFIX + syncUserId, timestamp);
+                } else {
+                    localStorage.setItem(GUEST_CHAT_KEY, '[]');
+                    localStorage.setItem(GUEST_UPDATED_KEY, timestamp);
+                }
+                stored = true;
+            } catch (error) { /* Show a save error if local storage is unavailable. */ }
+            statusText.classList.remove('status-error');
+            statusText.textContent = newUiCopy().deleted;
+            if (syncUserId && supabaseClient) {
+                setSaveIndicator('saving');
+                await syncCurrentConversationToCloud();
+                if (saveIndicator.classList.contains('error')) saveStatusText.textContent = newUiCopy().deleteError;
+            } else {
+                setSaveIndicator(stored ? 'saved' : 'error');
+                if (stored) saveStatusText.textContent = newUiCopy().deleted;
+            }
+        }
 
         function applyBackground(theme, save = true) {
             const allowedThemes = ['midnight', 'ocean', 'aurora', 'sunset', 'forest', 'rose', 'slate', 'cosmic'];
@@ -781,6 +907,7 @@
             modelLoadAbortReject = null;
             warmupModelId = '';
             isModelLoading = false;
+            modelProgress.hidden = true;
             discardAIEngine();
             if (rejectCancellation) rejectCancellation(new DOMException('Model loading was paused.', 'AbortError'));
             if (!isGenerating && !isSpeaking) statusText.textContent = copy().ready;
@@ -1270,10 +1397,22 @@
                 }
             }
             if (aiEngine && activeModelId === modelId) return aiEngine;
-            if (!navigator.gpu) throw new Error('This browser or device does not support WebGPU. Try a recent browser on a WebGPU-capable device. VoiceCommand works on phones that support it, and runs best on a PC or laptop.');
+            if (!navigator.gpu) {
+                statusText.classList.add('status-error');
+                statusText.textContent = newUiCopy().gpuUnavailable;
+                throw new Error(newUiCopy().gpuUnavailable);
+            }
 
             const loadToken = ++modelLoadGeneration;
             isModelLoading = true;
+            statusText.classList.remove('status-error');
+            modelProgress.hidden = false;
+            modelProgressLabel.textContent = modelId === VISION_MODEL_ID ? newUiCopy().loadingPhoto : newUiCopy().loadingChat;
+            modelProgressPercent.textContent = '…';
+            modelProgressTrack.classList.add('indeterminate');
+            modelProgressTrack.setAttribute('aria-valuenow', '0');
+            modelProgressBar.style.width = '34%';
+            modelProgressText.textContent = newUiCopy().preparing;
             updateSendButton();
             statusText.textContent = modelId === VISION_MODEL_ID
                 ? 'Loading on-device photo recognition. The first photo-model download may take a while…'
@@ -1302,7 +1441,14 @@
                     aiWorker = worker;
                     const engine = await webllm.CreateWebWorkerMLCEngine(worker, modelId, {
                         initProgressCallback: progress => {
-                            const detail = progress && progress.text ? progress.text : 'Preparing the on-device model…';
+                            const detail = progress && progress.text ? progress.text : newUiCopy().preparing;
+                            const rawProgress = progress ? Number(progress.progress) : NaN;
+                            const percent = Number.isFinite(rawProgress) ? Math.round(Math.max(0, Math.min(100, rawProgress <= 1 ? rawProgress * 100 : rawProgress))) : null;
+                            modelProgressPercent.textContent = percent === null ? '…' : percent + '%';
+                            modelProgressTrack.classList.toggle('indeterminate', percent === null);
+                            modelProgressTrack.setAttribute('aria-valuenow', String(percent === null ? 0 : percent));
+                            modelProgressBar.style.width = percent === null ? '34%' : percent + '%';
+                            modelProgressText.textContent = detail;
                             statusText.textContent = detail;
                         }
                     });
@@ -1327,6 +1473,7 @@
                 if (loadToken === modelLoadGeneration) {
                     modelLoadAbortReject = null;
                     isModelLoading = false;
+                    modelProgress.hidden = true;
                 }
                 updateSendButton();
             }
@@ -1521,12 +1668,16 @@
                     }
                     statusText.textContent = copy().ready;
                 } else {
-                    responseNode.textContent = 'I could not start the free on-device AI. ' + (error && error.message ? error.message : 'Check your browser and internet connection, then try again.');
-                    statusText.textContent = 'AI could not start. Check WebGPU, your connection, and available device memory.';
+                    const gpuUnavailable = !navigator.gpu;
+                    const errorText = gpuUnavailable ? newUiCopy().gpuUnavailable : newUiCopy().aiStartFailed;
+                    responseNode.textContent = errorText;
+                    statusText.textContent = errorText;
+                    statusText.classList.add('status-error');
                 }
             } finally {
                 isGenerating = false;
                 isModelLoading = false;
+                modelProgress.hidden = true;
                 cancelRequested = false;
                 updateSendButton();
                 photoButton.disabled = false;
