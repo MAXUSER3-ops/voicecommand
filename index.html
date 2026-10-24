@@ -23,6 +23,7 @@
         .subtitle { margin: 8px 0 12px; color: #a9b8cc; }
         .free-note { display: inline-block; margin: 0 8px 22px 0; padding: 7px 11px; border: 1px solid #166534; border-radius: 999px; background: rgba(20, 83, 45, .25); color: #bbf7d0; font-size: .86rem; line-height: 1.4; }
         .device-note { display: inline-block; margin: 0 0 22px; padding: 7px 11px; border: 1px solid #33445f; border-radius: 999px; background: rgba(15, 23, 42, .58); color: #cbd5e1; font-size: .86rem; line-height: 1.4; }
+        .account-status { margin: -8px 0 18px; color: #9fb0c5; font-size: .88rem; line-height: 1.5; }
         .assistant-panel { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 22px; padding: 18px 22px; border: 1px solid #26364f; border-radius: 20px; background: rgba(15, 23, 42, .76); box-shadow: 0 18px 50px rgba(0, 0, 0, .2); }
         .circle { width: 100px; height: 100px; flex-shrink: 0; touch-action: manipulation; background: #38bdf8; border: 0; border-radius: 50%; cursor: pointer; box-shadow: 0 0 26px rgba(56, 189, 248, .4); display: flex; align-items: center; justify-content: center; color: #082f49; font-size: .84rem; font-weight: 800; letter-spacing: .04em; user-select: none; transition: transform .2s, background .2s, box-shadow .2s; }
         .circle:hover { transform: scale(1.04); }
@@ -31,6 +32,10 @@
         .circle.speaking { background: #c4b5fd; color: #2e1065; box-shadow: 0 0 30px rgba(196, 181, 253, .5); }
         .panel-copy { text-align: left; }
         #status { margin: 0 0 14px; color: #cbd5e1; font-size: .98rem; min-height: 1.5em; }
+        .call-mode-button { width: 100%; max-width: 320px; min-height: 42px; margin: 0 0 12px; padding: 0 14px; border: 1px solid #166534; border-radius: 10px; background: #14532d; color: #dcfce7; font: inherit; font-weight: 700; cursor: pointer; touch-action: manipulation; }
+        .call-mode-button:hover { background: #166534; }
+        .call-mode-button[aria-pressed="true"] { border-color: #9f1239; background: #881337; color: #ffe4e6; }
+        .call-mode-note { margin: -4px 0 12px; color: #9fb0c5; font-size: .82rem; line-height: 1.45; }
         .voice-row, .language-row, .background-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; color: #9fb0c5; font-size: .88rem; }
         .voice-row select, .language-row select, .background-row select { min-width: 0; max-width: min(100%, 340px); min-height: 40px; padding: 8px 10px; border: 1px solid #33445f; border-radius: 9px; background: #111c30; color: #e2e8f0; }
         .ai-note { margin: -12px 0 22px; color: #a9b8cc; font-size: .86rem; line-height: 1.5; }
@@ -50,6 +55,7 @@
         .photo-button { min-height: 48px; padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #33445f; touch-action: manipulation; border-radius: 12px; background: #172338; color: #dbeafe; font: inherit; font-weight: 650; cursor: pointer; white-space: nowrap; }
         .photo-button:hover { background: #22334d; }
         .image-message { display: block; max-width: min(100%, 260px); max-height: 260px; margin-top: 10px; border: 1px solid #33445f; border-radius: 12px; object-fit: contain; }
+        .photo-not-saved { display: block; margin-top: 8px; color: #a9b8cc; font-size: .8rem; }
         .composer input { flex: 1; min-width: 0; min-height: 48px; padding: 13px 14px; border: 1px solid #33445f; border-radius: 12px; background: #0b1425; color: #f8fafc; font: inherit; }
         .composer input::placeholder { color: #8293aa; }
         .composer button { min-height: 48px; padding: 0 20px; border: 0; touch-action: manipulation; border-radius: 12px; background: #38bdf8; color: #082f49; font: inherit; font-weight: 750; cursor: pointer; }
@@ -97,13 +103,16 @@
             <h1>VoiceCommand</h1>
         </div>
         <p class="subtitle" id="subtitle">Talk out loud or type a message to chat.</p>
-        <p class="free-note" id="freeNote">Free to use · no account or API key required</p>
+        <p class="free-note" id="freeNote">Free to use · guest mode available</p>
+        <p class="account-status" id="accountStatus">Guest mode · chats save in this browser and do not sync across devices.</p>
         <p class="ai-note" id="aiNote">Free on-device AI. The quick chat model downloads on first use; Greek chats and photo analysis each download a model the first time. WebGPU is required, and photos stay on your device.</p>
         <p class="device-note" id="deviceNote">Works on phones, but runs best on a PC or laptop.</p>
         <section class="assistant-panel" aria-label="Voice controls">
             <button id="orb" class="circle" type="button" aria-label="Start speaking">TALK</button>
             <div class="panel-copy">
                 <p id="status" role="status" aria-live="polite">Ready when you are.</p>
+                <button id="callModeButton" class="call-mode-button" type="button" aria-pressed="false">Start live voice chat</button>
+                <p class="call-mode-note" id="callModeHint">Live voice chat uses your microphone; browser support may vary.</p>
                 <label class="language-row" for="languageSelect"><span id="languageLabel">Language</span>
                     <select id="languageSelect" aria-label="Choose language">
                         <option value="en-US">English (US)</option>
@@ -145,10 +154,11 @@
         <p class="hint" id="hint">I can help with weather in Greece, the time and date, calculations, jokes, and everyday questions.</p>
         <p class="hint" id="voiceHint">Available voices depend on your browser or device. Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>; place names by <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a>.</p>
     </main>
-    <footer class="page-footer"><strong>Current version: 1.2.0</strong> · <span class="beta-note">Beta · still under testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
+        <footer class="page-footer"><strong>Current version: 1.3.0</strong> · <span class="beta-note">Beta · still under testing</span> · Free to use · Made by Konstantinos Gramma.</footer>
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const orb = document.getElementById('orb');
+        const callModeButton = document.getElementById('callModeButton');
         const statusText = document.getElementById('status');
         const conversation = document.getElementById('conversation');
         const chatForm = document.getElementById('chatForm');
@@ -164,6 +174,8 @@
         const removePhotoButton = document.getElementById('removePhoto');
         let recognition = null;
         let isListening = false;
+        let callModeActive = false;
+        let callRestartTimer = 0;
         let availableVoices = [];
         let waitingForName = false;
         let userName = '';
@@ -184,13 +196,17 @@
         let isModelLoading = false;
         let cancelRequested = false;
         let workerBlobUrl = '';
+        const GUEST_CHAT_KEY = 'voicecommand-guest-chat-v1';
+        let restoringConversation = false;
+        let hasRestoredConversation = false;
+        let guestSaveTimer = 0;
         const TEXT_MODEL_ID = 'Llama-3.2-1B-Instruct-q4f16_1-MLC';
         const GREEK_MODEL_ID = 'Phi-3.5-mini-instruct-q4f16_1-MLC-1k';
         const VISION_MODEL_ID = 'Phi-3.5-vision-instruct-q4f16_1-MLC';
 
         const COPY = {
             'en-US': {
-                ui: ['Talk out loud or type a message to chat.', 'Free to use · no account or API key required', 'Works on phones, but runs best on a PC or laptop.', 'Language', 'Voice', 'Conversation', 'Type a message…', 'Send'],
+                ui: ['Talk out loud or type a message to chat.', 'Free to use · guest mode available', 'Works on phones, but runs best on a PC or laptop.', 'Language', 'Voice', 'Conversation', 'Type a message…', 'Send'],
                 hint: 'Ask me anything. I can also help with weather in Greece, calculations, and more.',
                 voiceHint: 'Available voices depend on your browser or device. For a natural sound, choose a voice marked natural, enhanced, or neural if available. Weather data by ',
                 welcome: 'Hi! Send me a message or tap TALK to speak. What would you like help with?', ready: 'Ready when you are.', listening: 'I’m listening…',
@@ -206,7 +222,7 @@
             },
             'en-GB': null,
             'el-GR': {
-                ui: ['Μίλησε ή πληκτρολόγησε ένα μήνυμα για να συνομιλήσουμε.', 'Δωρεάν χρήση · χωρίς λογαριασμό ή κλειδί API', 'Λειτουργεί σε κινητά, αλλά αποδίδει καλύτερα σε υπολογιστή ή laptop.', 'Γλώσσα', 'Φωνή', 'Συνομιλία', 'Πληκτρολόγησε ένα μήνυμα…', 'Αποστολή'],
+                ui: ['Μίλησε ή πληκτρολόγησε ένα μήνυμα για να συνομιλήσουμε.', 'Δωρεάν χρήση · διαθέσιμη λειτουργία επισκέπτη', 'Λειτουργεί σε κινητά, αλλά αποδίδει καλύτερα σε υπολογιστή ή laptop.', 'Γλώσσα', 'Φωνή', 'Συνομιλία', 'Πληκτρολόγησε ένα μήνυμα…', 'Αποστολή'],
                 hint: 'Ρώτησέ με ό,τι θέλεις. Μπορώ επίσης να βοηθήσω με τον καιρό στην Ελλάδα, υπολογισμούς και άλλα.',
                 voiceHint: 'Οι φωνές εξαρτώνται από τη συσκευή ή το πρόγραμμα περιήγησης. Για φυσικό ήχο διάλεξε φυσική ή βελτιωμένη φωνή, αν υπάρχει. Καιρός από ',
                 welcome: 'Γεια! Στείλε μου μήνυμα ή πάτησε TALK για να μιλήσεις. Πώς μπορώ να βοηθήσω;', ready: 'Έτοιμος όταν είσαι κι εσύ.', listening: 'Σε ακούω…',
@@ -221,7 +237,7 @@
                 intents: { greeting: ['γεια','καλημέρα','καλησπέρα','χαίρετε'], name: ['πώς σε λένε','ποιο είναι το όνομά σου','ποιος είσαι'], help: ['τι μπορείς να κάνεις','βοήθεια','τι μπορώ να ρωτήσω'], thanks: ['ευχαριστώ'], mood: ['τι κάνεις','πώς είσαι','είσαι καλά'], bye: ['αντίο','γεια σου','καληνύχτα','τα λέμε'], joke: ['πες μου ένα αστείο','αστείο','κάνε με να γελάσω'], time: ['τι ώρα','ώρα είναι'], date: ['τι ημερομηνία','τι μέρα','σήμερα'], weather: ['καιρός','πρόγνωση','θερμοκρασία','βρέχει','βροχή','χιόνι'], purpose: ['ποιος σε έφτιαξε','ποιος σε δημιούργησε'], plus: ['συν'], minus: ['μείον'], times: ['επί','φορές'], divided: ['διά','διαιρούμενο με'] }
             },
             'hi-IN': {
-                ui: ['बोलकर या संदेश लिखकर चैट करें।', 'मुफ़्त · खाता या API कुंजी ज़रूरी नहीं', 'फ़ोन पर काम करता है, लेकिन PC या लैपटॉप पर बेहतर चलता है।', 'भाषा', 'आवाज़', 'बातचीत', 'संदेश लिखें…', 'भेजें'],
+                ui: ['बोलकर या संदेश लिखकर चैट करें।', 'मुफ़्त · गेस्ट मोड उपलब्ध', 'फ़ोन पर काम करता है, लेकिन PC या लैपटॉप पर बेहतर चलता है।', 'भाषा', 'आवाज़', 'बातचीत', 'संदेश लिखें…', 'भेजें'],
                 hint: 'कुछ भी पूछें। मैं ग्रीस के मौसम, गणनाओं और दूसरे सवालों में भी मदद कर सकता हूँ।',
                 voiceHint: 'उपलब्ध आवाज़ें आपके ब्राउज़र या डिवाइस पर निर्भर हैं। मौसम की जानकारी: ',
                 welcome: 'नमस्ते! संदेश भेजें या बोलने के लिए TALK दबाएँ। मैं आपकी क्या मदद करूँ?', ready: 'जब चाहें, मैं तैयार हूँ।', listening: 'मैं सुन रहा हूँ…',
@@ -236,7 +252,7 @@
                 intents: { greeting: ['नमस्ते','नमस्कार','हाय','सुप्रभात'], name: ['तुम्हारा नाम','आपका नाम','तुम कौन हो','आप कौन हैं'], help: ['क्या कर सकते हो','क्या कर सकते हैं','मदद','क्या पूछ सकता हूँ'], thanks: ['धन्यवाद','शुक्रिया'], mood: ['कैसे हो','कैसे हैं','ठीक हो'], bye: ['अलविदा','फिर मिलेंगे','शुभ रात्रि'], joke: ['चुटकुला','मज़ाक सुनाओ','हँसाओ'], time: ['कितने बजे','समय क्या','अभी समय'], date: ['आज की तारीख','आज कौन सा दिन','तारीख क्या'], weather: ['मौसम','तापमान','बारिश','बादल','बर्फ़'], purpose: ['किसने बनाया'], plus: ['जोड़'], minus: ['घटाना','माइनस'], times: ['गुना'], divided: ['भाग'] }
             },
             'ru-RU': {
-                ui: ['Говорите или пишите сообщение, чтобы общаться.', 'Бесплатно · аккаунт и ключ API не нужны', 'Работает на телефонах, но лучше всего — на ПК или ноутбуке.', 'Язык', 'Голос', 'Беседа', 'Введите сообщение…', 'Отправить'],
+                ui: ['Говорите или пишите сообщение, чтобы общаться.', 'Бесплатно · доступен гостевой режим', 'Работает на телефонах, но лучше всего — на ПК или ноутбуке.', 'Язык', 'Голос', 'Беседа', 'Введите сообщение…', 'Отправить'],
                 hint: 'Спрашивайте о чём угодно. Я также могу помочь с погодой в Греции, вычислениями и другими вопросами.',
                 voiceHint: 'Доступные голоса зависят от браузера или устройства. Данные о погоде: ',
                 welcome: 'Привет! Напишите сообщение или нажмите TALK, чтобы говорить. Чем я могу помочь?', ready: 'Готов, когда будете готовы.', listening: 'Слушаю…',
@@ -292,6 +308,34 @@
         COPY['ru-RU'].stoppingLabel = 'Останавливаю…';
         COPY['ru-RU'].stoppedLabel = 'Ответ остановлен.';
         COPY['ru-RU'].photoPrompt = 'Опиши, что изображено на фотографии: основные объекты, обстановку и читаемый текст.';
+        COPY['en-US'].accountStatus = 'Guest mode · chats save in this browser and do not sync across devices.';
+        COPY['en-US'].callModeLabel = 'Start live voice chat';
+        COPY['en-US'].endCallModeLabel = 'End voice chat';
+        COPY['en-US'].callModeActive = 'Live voice chat is active. Speak when ready.';
+        COPY['en-US'].callModeUnsupported = 'Live voice chat needs microphone access and a browser with speech recognition and speech playback.';
+        COPY['en-US'].callModeHint = 'Live voice chat uses your microphone; browser support may vary.';
+        COPY['en-US'].photoNotSaved = 'Photo not saved with this chat.';
+        COPY['el-GR'].accountStatus = 'Λειτουργία επισκέπτη · οι συνομιλίες αποθηκεύονται σε αυτό το πρόγραμμα περιήγησης και δεν συγχρονίζονται μεταξύ συσκευών.';
+        COPY['el-GR'].callModeLabel = 'Έναρξη ζωντανής φωνητικής συνομιλίας';
+        COPY['el-GR'].endCallModeLabel = 'Τερματισμός φωνητικής συνομιλίας';
+        COPY['el-GR'].callModeActive = 'Η ζωντανή φωνητική συνομιλία είναι ενεργή. Μίλησε όποτε είσαι έτοιμος.';
+        COPY['el-GR'].callModeUnsupported = 'Η ζωντανή φωνητική συνομιλία χρειάζεται μικρόφωνο και πρόγραμμα περιήγησης με αναγνώριση ομιλίας και εκφώνηση.';
+        COPY['el-GR'].callModeHint = 'Η ζωντανή φωνητική συνομιλία χρησιμοποιεί το μικρόφωνο· η υποστήριξη διαφέρει ανά πρόγραμμα περιήγησης.';
+        COPY['el-GR'].photoNotSaved = 'Η φωτογραφία δεν αποθηκεύτηκε σε αυτή τη συνομιλία.';
+        COPY['hi-IN'].accountStatus = 'गेस्ट मोड · चैट इस ब्राउज़र में अपने-आप सहेजी जाती है और डिवाइसों के बीच सिंक नहीं होती।';
+        COPY['hi-IN'].callModeLabel = 'लाइव वॉइस चैट शुरू करें';
+        COPY['hi-IN'].endCallModeLabel = 'वॉइस चैट समाप्त करें';
+        COPY['hi-IN'].callModeActive = 'लाइव वॉइस चैट चालू है। तैयार होने पर बोलें।';
+        COPY['hi-IN'].callModeUnsupported = 'लाइव वॉइस चैट के लिए माइक्रोफ़ोन और वॉइस पहचान व बोलने की सुविधा वाला ब्राउज़र चाहिए।';
+        COPY['hi-IN'].callModeHint = 'लाइव वॉइस चैट आपके माइक्रोफ़ोन का उपयोग करती है; ब्राउज़र के अनुसार समर्थन अलग हो सकता है।';
+        COPY['hi-IN'].photoNotSaved = 'इस चैट के साथ फ़ोटो सहेजी नहीं गई।';
+        COPY['ru-RU'].accountStatus = 'Гостевой режим · беседы сохраняются в этом браузере и не синхронизируются между устройствами.';
+        COPY['ru-RU'].callModeLabel = 'Начать голосовой разговор';
+        COPY['ru-RU'].endCallModeLabel = 'Завершить голосовой разговор';
+        COPY['ru-RU'].callModeActive = 'Голосовой разговор активен. Говорите, когда будете готовы.';
+        COPY['ru-RU'].callModeUnsupported = 'Для голосового разговора нужны микрофон и браузер с распознаванием и озвучиванием речи.';
+        COPY['ru-RU'].callModeHint = 'Голосовой разговор использует микрофон; поддержка зависит от браузера.';
+        COPY['ru-RU'].photoNotSaved = 'Фотография не сохранена в этой беседе.';
         function copy() { return COPY[languageSelect.value] || COPY['en-US']; }
         function fill(template, value) { return template.replace('{name}', value || ''); }
         function setLanguage() {
@@ -299,6 +343,9 @@
             document.documentElement.lang = languageSelect.value;
             const ids = ['subtitle','freeNote','deviceNote','languageLabel','voiceLabel','chatHeading'];
             ids.forEach((id, i) => { document.getElementById(id).textContent = c.ui[i]; });
+            document.getElementById('accountStatus').textContent = c.accountStatus;
+            document.getElementById('callModeHint').textContent = c.callModeHint;
+            updateCallModeButton();
             document.getElementById('backgroundLabel').textContent = c.backgroundLabel || 'Background';
             Array.from(backgroundSelect.options).forEach((option, index) => {
                 option.textContent = (c.backgrounds || ['Midnight', 'Ocean', 'Aurora'])[index];
@@ -317,10 +364,13 @@
             const geoLink = document.createElement('a');
             geoLink.href = 'https://www.geonames.org/'; geoLink.target = '_blank'; geoLink.rel = 'noopener'; geoLink.textContent = 'GeoNames';
             note.append(weatherLink, document.createTextNode('; '), geoLink, document.createTextNode('.'));
-            if (recognition) recognition.lang = languageSelect.value;
+            if (recognition) {
+                recognition.lang = languageSelect.value;
+                if (callModeActive && isListening) { try { recognition.stop(); } catch (error) { /* It may already be stopping. */ } }
+            }
             if ('speechSynthesis' in window) populateVoices();
             statusText.textContent = c.ready;
-            if (conversation.children.length <= 1) {
+            if (!hasRestoredConversation && conversation.children.length <= 1) {
                 conversation.replaceChildren();
                 addMessage('assistant', c.welcome);
             }
@@ -398,13 +448,14 @@
             updateSendButton();
         }
 
-        function addMessage(who, message, imageUrl = '') {
+        function addMessage(who, message, imageUrl = '', photoPlaceholder = false) {
             const bubble = document.createElement('div');
             bubble.className = 'message ' + who;
             const label = document.createElement('span');
             label.className = 'speaker';
             label.textContent = who === 'user' ? 'You' : 'Assistant';
             const content = document.createElement('span');
+            content.className = 'message-content';
             content.textContent = message;
             bubble.append(label, content);
             if (imageUrl) {
@@ -413,11 +464,127 @@
                 image.src = imageUrl;
                 image.alt = 'Photo attached to this message';
                 bubble.appendChild(image);
+            } else if (photoPlaceholder) {
+                const note = document.createElement('span');
+                note.className = 'photo-not-saved';
+                note.textContent = copy().photoNotSaved;
+                bubble.appendChild(note);
             }
             conversation.appendChild(bubble);
             conversation.scrollTop = conversation.scrollHeight;
+            scheduleConversationSave();
             return content;
         }
+
+        function savedConversationMessages() {
+            return Array.from(conversation.querySelectorAll('.message')).map(bubble => ({
+                role: bubble.classList.contains('user') ? 'user' : 'assistant',
+                content: bubble.querySelector('.message-content')?.textContent || '',
+                photo: Boolean(bubble.querySelector('.image-message, .photo-not-saved'))
+            })).slice(-80);
+        }
+
+        function saveGuestConversation() {
+            if (restoringConversation) return;
+            try { localStorage.setItem(GUEST_CHAT_KEY, JSON.stringify(savedConversationMessages())); }
+            catch (error) { /* Keep the chat usable when storage is full or disabled. */ }
+        }
+
+        function scheduleConversationSave() {
+            if (restoringConversation) return;
+            if (guestSaveTimer) clearTimeout(guestSaveTimer);
+            guestSaveTimer = setTimeout(() => {
+                guestSaveTimer = 0;
+                saveGuestConversation();
+            }, 300);
+        }
+
+        function restoreGuestConversation() {
+            try {
+                const raw = localStorage.getItem(GUEST_CHAT_KEY);
+                if (!raw) return false;
+                const saved = JSON.parse(raw);
+                if (!Array.isArray(saved)) return false;
+                const valid = saved.filter(item => item && ['user', 'assistant'].includes(item.role) && typeof item.content === 'string').slice(-80);
+                if (!valid.length) return false;
+                hasRestoredConversation = true;
+                restoringConversation = true;
+                conversation.replaceChildren();
+                valid.forEach(item => addMessage(item.role, item.content.slice(0, 8000), '', item.photo === true));
+                aiHistory = valid.filter(item => item.content.trim()).slice(-8).map(item => ({ role: item.role, content: item.content.slice(0, 8000) }));
+                restoringConversation = false;
+                return true;
+            } catch (error) {
+                restoringConversation = false;
+                return false;
+            }
+        }
+
+        function updateCallModeButton() {
+            const c = copy();
+            callModeButton.textContent = callModeActive ? c.endCallModeLabel : c.callModeLabel;
+            callModeButton.setAttribute('aria-pressed', String(callModeActive));
+        }
+
+        function scheduleCallRecognition() {
+            if (callRestartTimer) clearTimeout(callRestartTimer);
+            if (!callModeActive) return;
+            callRestartTimer = setTimeout(() => {
+                callRestartTimer = 0;
+                if (callModeActive && !isGenerating && !isSpeaking && !isListening) startCallRecognition();
+            }, 300);
+        }
+
+        function startCallRecognition() {
+            if (!callModeActive || !recognition || isGenerating || isSpeaking || isListening) return;
+            recognition.lang = languageSelect.value;
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            try {
+                recognition.start();
+                isListening = true;
+                orb.classList.remove('speaking');
+                orb.classList.add('listening');
+                orb.textContent = 'LISTENING';
+                statusText.textContent = copy().callModeActive;
+            } catch (error) {
+                endCallMode();
+                statusText.textContent = copy().callModeUnsupported;
+            }
+        }
+
+        function endCallMode() {
+            callModeActive = false;
+            if (callRestartTimer) clearTimeout(callRestartTimer);
+            callRestartTimer = 0;
+            if (recognition && isListening) {
+                isListening = false;
+                try { recognition.stop(); } catch (error) { /* Recognition may already have stopped. */ }
+            }
+            if (isSpeaking && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                activeUtterance = null;
+                orb.classList.remove('speaking');
+            }
+            resetOrb();
+            updateCallModeButton();
+            if (!isGenerating && !isSpeaking) statusText.textContent = copy().ready;
+        }
+
+        function toggleCallMode() {
+            if (callModeActive) { endCallMode(); return; }
+            if (!recognition || !('speechSynthesis' in window)) {
+                statusText.textContent = copy().callModeUnsupported;
+                return;
+            }
+            callModeActive = true;
+            updateCallModeButton();
+            startCallRecognition();
+        }
+
+        callModeButton.addEventListener('click', toggleCallMode);
+        window.addEventListener('pagehide', saveGuestConversation);
 
         function chooseNaturalVoice(locale = languageSelect.value) {
             if (!availableVoices.length) return null;
@@ -458,12 +625,19 @@
             populateVoices();
             window.speechSynthesis.onvoiceschanged = populateVoices;
         }
+        restoreGuestConversation();
+        const conversationObserver = new MutationObserver(scheduleConversationSave);
+        conversationObserver.observe(conversation, { childList: true, subtree: true, characterData: true });
         setLanguage();
         chatForm.addEventListener('submit', event => {
             event.preventDefault();
             if (isGenerating || isSpeaking) { stopGeneration(); return; }
             const message = messageInput.value.trim();
             if (!message && !selectedPhoto) return;
+            if (callModeActive && isListening && recognition) {
+                isListening = false;
+                try { recognition.stop(); } catch (error) { /* Recognition may already be stopping. */ }
+            }
             const photoData = selectedPhoto && selectedPhoto.dataUrl;
             const prompt = message || copy().photoPrompt;
             messageInput.value = '';
@@ -781,6 +955,7 @@
                 photoButton.disabled = false;
                 orb.disabled = false;
                 messageInput.focus();
+                if (callModeActive) scheduleCallRecognition();
             }
         }
 
@@ -790,7 +965,14 @@
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
             recognition.onresult = function(event) {
-                const heard = event.results[0][0].transcript.trim();
+                const heard = Array.from(event.results).slice(event.resultIndex).map(result => result[0]?.transcript || '').join(' ').trim();
+                if (!heard) return;
+                if (callModeActive) {
+                    isListening = false;
+                    orb.classList.remove('listening');
+                    orb.textContent = 'TALK';
+                    try { recognition.stop(); } catch (error) { /* Recognition may already have stopped. */ }
+                }
                 handleUserMessage(heard);
             };
             recognition.onerror = function(event) {
@@ -798,12 +980,19 @@
                 const c = copy();
                 const message = event.error === 'not-allowed' || event.error === 'service-not-allowed'
                     ? c.allowMic : event.error === 'no-speech' ? c.noSpeech : c.trouble;
+                if (callModeActive && event.error !== 'no-speech' && event.error !== 'aborted') endCallMode();
                 statusText.textContent = message;
             };
-            recognition.onend = function() { isListening = false; orb.classList.remove('listening'); if (orb.textContent === 'LISTENING') orb.textContent = 'TALK'; };
+            recognition.onend = function() {
+                isListening = false;
+                orb.classList.remove('listening');
+                if (orb.textContent === 'LISTENING') orb.textContent = 'TALK';
+                if (callModeActive) scheduleCallRecognition();
+            };
         }
 
         function startListening() {
+            if (callModeActive) { endCallMode(); return; }
             if (isGenerating) return;
             if (!recognition) {
                 statusText.textContent = copy().unsupported;
@@ -812,6 +1001,7 @@
             if (isListening) { recognition.stop(); return; }
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             try {
+                recognition.continuous = false;
                 recognition.start();
                 isListening = true;
                 orb.classList.remove('speaking');
@@ -1025,8 +1215,9 @@
                 activeUtterance = null;
                 isSpeaking = false;
                 orb.classList.remove('speaking');
-                statusText.textContent = message;
+                statusText.textContent = callModeActive ? copy().callModeActive : message;
                 updateSendButton();
+                if (callModeActive) scheduleCallRecognition();
             };
             utterance.onend = () => finishSpeech(copy().ready);
             utterance.onerror = () => finishSpeech('Reply shown in chat.');
